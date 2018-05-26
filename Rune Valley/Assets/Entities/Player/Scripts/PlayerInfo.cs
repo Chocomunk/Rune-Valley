@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Camera))]
 public class PlayerInfo : MonoBehaviour {
 
+    public int maxHealth = 100;
     public int health = 100;
     public int energy = 100;
     public int armor;
@@ -19,7 +19,7 @@ public class PlayerInfo : MonoBehaviour {
 
     public void Start()
     {
-        FirstPersonCamera = this.gameObject.GetComponent<Camera>();
+        FirstPersonCamera = this.gameObject.GetComponentInChildren<Camera>();
     }
 
     public Camera getCamera()
