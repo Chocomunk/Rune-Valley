@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 23915748549744746}
   - component: {fileID: 135520965340275134}
   - component: {fileID: 54564506421340562}
+  - component: {fileID: 114398674360888242}
   m_Layer: 0
   m_Name: SlimeballResource
   m_TagString: Untagged
@@ -100,6 +101,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &114398674360888242
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1920131571331210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdd3c0134e2fee34c9a80d6399ad4e10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attractRange: 7
+  pickupRange: 0.6
+  flightSpeed: 3
+  lifetime: -1
+  item: {fileID: 11400000, guid: be546558e9b27834b89b2e93249842ad, type: 2}
 --- !u!135 &135520965340275134
 SphereCollider:
   m_ObjectHideFlags: 1

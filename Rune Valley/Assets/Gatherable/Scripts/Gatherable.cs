@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(GatherableInfo))]
+[RequireComponent(typeof(GatherableStats))]
 public class Gatherable : MonoBehaviour {
 
-    private GatherableInfo info;
+    private GatherableStats stats;
 
     public GameObject drop;
 
@@ -14,12 +14,12 @@ public class Gatherable : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        info = this.gameObject.GetComponent<GatherableInfo>();
+        stats = this.gameObject.GetComponent<GatherableStats>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(info.health <= 0)
+		if(stats.health <= 0)
         {
             Die();
         }
@@ -27,7 +27,7 @@ public class Gatherable : MonoBehaviour {
 
     public void Damage(float damage)
     {
-        info.health -= (int)(damage + Random.Range(0,1));
+        stats.health -= (int)(damage + Random.Range(0,1));
     }
 
     void Die()

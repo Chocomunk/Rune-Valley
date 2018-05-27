@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyInfo : GatherableInfo {
+public class EnemyStats : GatherableStats {
 
     public float damage = 10;
     public float attackSpeed = 2;

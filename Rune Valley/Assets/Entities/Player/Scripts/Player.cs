@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerInfo))]
+[RequireComponent(typeof(PlayerStats))]
 public class Player : MonoBehaviour {
 
-    private PlayerInfo info;
+    private PlayerStats stats;
 
 	// Use this for initialization
 	void Start () {
-        info = this.gameObject.GetComponent<PlayerInfo>();
+        stats = this.gameObject.GetComponent<PlayerStats>();
         PlayerManager.playerInstance = this;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(info.health <= 0)
+		if(stats.health <= 0)
         {
             Die();
         }
@@ -23,7 +23,7 @@ public class Player : MonoBehaviour {
 
     public void Damage(float damage)
     {
-        info.health -= (int)(damage + Random.Range(0,1));
+        stats.health -= (int)(damage + Random.Range(0,1));
     }
 
     void Die()

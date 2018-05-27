@@ -22,9 +22,9 @@ GameObject:
   - component: {fileID: 33341517123474088}
   - component: {fileID: 23349709018032612}
   - component: {fileID: 135639969814194582}
-  - component: {fileID: 114466426836544740}
   - component: {fileID: 114750660912246102}
   - component: {fileID: 114240865639568066}
+  - component: {fileID: 114869715762159024}
   m_Layer: 10
   m_Name: Slime
   m_TagString: Enemy
@@ -101,22 +101,6 @@ MonoBehaviour:
   drop: {fileID: 1920131571331210, guid: 491b2d726842019418ad389626a3452f, type: 2}
   dropCount: 3
   dropSpread: 0.5
---- !u!114 &114466426836544740
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1560272739417340}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de44a80e50f96a2448f3eec09cfb90a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 100
-  health: 100
-  damage: 10
-  attackSpeed: 2
-  attackRange: 2
 --- !u!114 &114750660912246102
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -128,6 +112,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f5d02b12ebca3b4c8eefe7acb60f652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114869715762159024
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1560272739417340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea78d17072636234183f22e2dbf3239b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  health: 100
+  damage: 10
+  attackSpeed: 2
+  attackRange: 1.5
 --- !u!135 &135639969814194582
 SphereCollider:
   m_ObjectHideFlags: 1

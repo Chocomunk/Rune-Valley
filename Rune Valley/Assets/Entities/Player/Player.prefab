@@ -60,7 +60,6 @@ GameObject:
   - component: {fileID: 114919670015072058}
   - component: {fileID: 54164630425054126}
   - component: {fileID: 82580520193015198}
-  - component: {fileID: 20838172901546194}
   - component: {fileID: 114649201222474770}
   - component: {fileID: 114878076176142946}
   m_Layer: 0
@@ -145,42 +144,6 @@ Camera:
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 0
-  m_StereoConvergence: 10
-  m_StereoSeparation: 0.022
---- !u!20 &20838172901546194
-Camera:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1899424105170016}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
-  m_NormalizedViewPortRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
-  field of view: 60
-  orthographic: 0
-  orthographic size: 5
-  m_Depth: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingPath: -1
-  m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 0
-  m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
-  m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
 --- !u!23 &23243746972557928
@@ -365,6 +328,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81327053ce49a7b4da59f678d887ce80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GatherableLayer:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!114 &114649201222474770
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -376,9 +342,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fd0b9695022ee54abb9f8601e858498, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GatherableLayer:
-    serializedVersion: 2
-    m_Bits: 1024
 --- !u!114 &114878076176142946
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -387,9 +350,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1899424105170016}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f458510bd2660254984e70fea96ecf45, type: 3}
+  m_Script: {fileID: 11500000, guid: 8e70b533fa19c944fbc11ba23984f3ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 100
   health: 100
   energy: 100
   armor: 0
@@ -397,6 +361,7 @@ MonoBehaviour:
   runningSpeed: 10
   miningSpeed: 5
   miningDistance: 10
+  miningDamage: 25
 --- !u!114 &114919670015072058
 MonoBehaviour:
   m_ObjectHideFlags: 1

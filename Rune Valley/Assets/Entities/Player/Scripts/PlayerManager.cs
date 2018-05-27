@@ -6,13 +6,9 @@ public class PlayerManager : MonoBehaviour {
 
     public static Player playerInstance;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public static bool PlayerExists()
+    {
+        return playerInstance != null;
+    }
+
 }

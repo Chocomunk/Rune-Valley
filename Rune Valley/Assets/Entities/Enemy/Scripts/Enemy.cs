@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(EnemyInfo))]
+[RequireComponent(typeof(EnemyStats))]
 public class Enemy : MonoBehaviour {
 
-    private EnemyInfo info;
+    private EnemyStats stats;
     private float attackCooldown;
 
 	// Use this for initialization
 	void Start () {
-        info = this.GetComponent<EnemyInfo>();
-        attackCooldown = 1 / info.attackSpeed;
+        stats = this.GetComponent<EnemyStats>();
+        attackCooldown = 1 / stats.attackSpeed;
 	}
 	
 	// Update is called once per frame
@@ -23,19 +23,32 @@ public class Enemy : MonoBehaviour {
             {
                 Attack();
             }
-        }
-        else
-        {
-            attackCooldown = 1 / info.attackSpeed;
+        } else {
+            attackCooldown = 1 / stats.attackSpeed;
         }
 	}
 
+    void OnDrawGizmosSelected()
+    {
+        if (stats != null)
+        {
+            if (inAttackRange())
+            {
+                Gizmos.color = Color.red;
+            } else
+            {
+                Gizmos.color = Color.yellow;
+            }
+            Gizmos.DrawWireSphere(this.transform.position, stats.attackRange);
+        }
+    }
+
     bool inAttackRange()
     {
-        if (PlayerManager.playerInstance)
+        if (PlayerManager.PlayerExists())
         {
             float distance = Vector3.Distance(PlayerManager.playerInstance.transform.position, this.transform.position);
-            return distance < info.attackRange;
+            return distance < stats.attackRange;
         }
         return false;
     }
@@ -47,8 +60,8 @@ public class Enemy : MonoBehaviour {
 
     void Attack()
     {
-        attackCooldown = 1 / info.attackSpeed;
-        PlayerManager.playerInstance.Damage(info.damage);
-        Debug.Log(this.gameObject.name +" is attacking the player for "+info.damage+" damage");
+        attackCooldown = 1 / stats.attackSpeed;
+        PlayerManager.playerInstance.Damage(stats.damage);
+        Debug.Log(this.gameObject.name +" is attacking the player for "+stats.damage+" damage");
     }
 }
