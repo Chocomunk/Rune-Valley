@@ -4,22 +4,6 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour {
 
-    #region Singleton
-
-    public static Inventory instance;
-
-    private void Awake()
-    {
-        if (instance != null)
-        {
-            Debug.LogWarning("More than one inventory instance found!");
-            return;
-        }
-        instance = this;
-    }
-
-    #endregion
-
     public delegate void OnItemChanged();
     public OnItemChanged onItemChangedCallback;
 
@@ -42,7 +26,12 @@ public class Inventory : MonoBehaviour {
 
     public bool Remove(Item item)
     {
-        return items.Remove(item);
+        bool result = items.Remove(item);
+        if (onItemChangedCallback != null)
+        {
+            onItemChangedCallback.Invoke();
+        }
+        return result;
     }
 
 }

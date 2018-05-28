@@ -112,8 +112,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdd3c0134e2fee34c9a80d6399ad4e10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attractRange: 7
-  pickupRange: 0.6
+  attractRange: 4
+  pickupRange: 0.75
+  pickupCooldown: 2
   flightSpeed: 3
   lifetime: -1
   item: {fileID: 11400000, guid: 1e586ebcc302f8747bc2666ab0989020, type: 2}

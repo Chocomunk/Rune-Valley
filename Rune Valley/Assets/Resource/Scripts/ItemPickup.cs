@@ -5,40 +5,64 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class ItemPickup : MonoBehaviour {
 
-    public float attractRange = 7;
-    public float pickupRange = .6f;
+    public float attractRange = 4;
+    public float pickupRange = .75f;
+    public float pickupCooldown = 2;    // Time in seconds after instantiation before item can be picked up
     public float flightSpeed = 3;
     public float lifetime = -1;
 
     public Item item;
+
+    private float currCooldown = -1;
+    private float currLifetime = -1;
 
     private Rigidbody rigidBody;
 
 	// Use this for initialization
 	void Start () {
         rigidBody = this.gameObject.GetComponent<Rigidbody>();
+        currCooldown = pickupCooldown;
+        currLifetime = lifetime;
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
         if (PlayerManager.PlayerExists())
         {
-            if (InRange(attractRange))
+            // Cooldown condition always true in "no cooldown" case (cooldown = -1)
+            if (currCooldown <= 0 && PlayerInRange(attractRange)) 
             {
                 MoveToPlayer();
-                if (InRange(pickupRange))
+                if (PlayerInRange(pickupRange))
                 {
-                    Debug.Log("Picked up "+this.gameObject.name);
-                    Inventory.instance.Add(item);
+                    PlayerManager.playerInventory.Add(item);
                     Destroy(this.gameObject);
                 }
+            }
+        }
+
+        // Cooldown = -1 means no cooldown
+        if(pickupCooldown > 0 && currCooldown > 0)
+        {
+            currCooldown -= Time.deltaTime;
+        }
+
+        // Lifetime = -1 means infinite lifetime
+        if(lifetime > 0)
+        {
+            if(currLifetime <= 0)
+            {
+                Destroy(this.gameObject);
+            } else
+            {
+                currLifetime -= Time.deltaTime;
             }
         }
 	}
 
     void OnDrawGizmosSelected()
     {
-        if (InRange(pickupRange))
+        if (PlayerInRange(pickupRange))
         {
             Gizmos.color = Color.blue;
         } else
@@ -48,7 +72,7 @@ public class ItemPickup : MonoBehaviour {
         Gizmos.DrawWireSphere(this.transform.position, pickupRange);
     }
 
-    bool InRange(float range)
+    bool PlayerInRange(float range)
     {
         if (PlayerManager.PlayerExists())
         {
