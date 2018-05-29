@@ -1,22 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour {
 
     public Transform itemsParent;
     public GameObject inventoryUI;
+    public InventorySlot inventorySlotPrefab;
 
-    Inventory inventory;
-    InventorySlot[] slots;
+    private Inventory inventory;
+    private InventorySlot[] slots;
+    private GameObject inventoryGrid;
 
 	// Use this for initialization
 	void Start () {
         inventory = PlayerManager.playerInventory;
+        inventoryGrid = inventoryUI.GetComponentInChildren<GridLayoutGroup>().gameObject;
         inventory.onItemChangedCallback += UpdateUI;
 
-        slots = itemsParent.GetComponentsInChildren<InventorySlot>();
-	}
+        InitializeGUI();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -27,11 +31,23 @@ public class InventoryUI : MonoBehaviour {
         }
 	}
 
+    void InitializeGUI()
+    {
+        slots = new InventorySlot[inventory.maxSize];
+        for(int i=0; i<inventory.maxSize; i++)
+        {
+            InventorySlot slot = Instantiate(inventorySlotPrefab) as InventorySlot;
+            slot.index = i;
+            slot.transform.SetParent(inventoryGrid.transform);
+            slots[i] = slot;
+        }
+    }
+
     void UpdateUI()
     {
         for (int i=0; i<slots.Length; i++)
         {
-            if (i < inventory.items.Count)
+            if (inventory.items[i] != null)
             {
                 slots[i].AddItem(inventory.items[i]);
             } else

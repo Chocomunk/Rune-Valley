@@ -5,16 +5,32 @@ public class InventorySlot : MonoBehaviour {
 
     public Image icon;
     public Button removeButton;
+    public Text itemCountText;
 
-    Item item;
+    public int index = 0;
+
+    InventoryEntry item;
+
+    void UpdateText()
+    {
+        if(item != null && item.itemCount > 0)
+        {
+            itemCountText.text = item.itemCount+"";
+        } else
+        {
+            itemCountText.text = "";
+        }
+    }
     
-    public void AddItem (Item newItem)
+    public void AddItem (InventoryEntry newItem)
     {
         item = newItem;
 
-        icon.sprite = item.icon;
+        icon.sprite = item.entryItem.icon;
         icon.enabled = true;
         removeButton.interactable = true;
+
+        UpdateText();
     }
 
     public void ClearSlot()
@@ -24,11 +40,15 @@ public class InventorySlot : MonoBehaviour {
         icon.sprite = null;
         icon.enabled = false;
         removeButton.interactable = false;
+
+        UpdateText();
     }
 
     public void OnRemoveButton()
     {
-        bool result = PlayerManager.playerInventory.Remove(item);
+        PlayerManager.playerInventory.RemoveAt(index, 1);
+
+        UpdateText();
     }
 
     public void UseItem()
@@ -37,6 +57,8 @@ public class InventorySlot : MonoBehaviour {
         {
             item.Use();
         }
+
+        UpdateText();
     }
 
 }
