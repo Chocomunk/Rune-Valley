@@ -1,21 +1,29 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class InventorySlot : MonoBehaviour {
 
+    public delegate void OnSlotLeftClick(int slotIndex);
+    public delegate void OnSlotRightClick(int slotIndex);
+    public OnSlotLeftClick OnSlotLeftCLickCallback;
+    public OnSlotRightClick OnSlotRightCLickCallback;
+
     public Image icon;
-    public Button removeButton;
     public Text itemCountText;
 
     public int index = 0;
 
-    InventoryEntry item;
+    private InventoryEntry _item;
+    public InventoryEntry item {
+        get { return _item; }
+    }
 
     void UpdateText()
     {
-        if(item != null && item.itemCount > 0)
+        if(_item != null && _item.itemCount > 0)
         {
-            itemCountText.text = item.itemCount+"";
+            itemCountText.text = _item.itemCount+"";
         } else
         {
             itemCountText.text = "";
@@ -24,41 +32,41 @@ public class InventorySlot : MonoBehaviour {
     
     public void AddItem (InventoryEntry newItem)
     {
-        item = newItem;
+        _item = newItem;
 
-        icon.sprite = item.entryItem.icon;
+        icon.sprite = _item.entryItem.icon;
         icon.enabled = true;
-        removeButton.interactable = true;
 
         UpdateText();
     }
 
     public void ClearSlot()
     {
-        item = null;
+        _item = null;
 
         icon.sprite = null;
         icon.enabled = false;
-        removeButton.interactable = false;
 
         UpdateText();
     }
 
-    public void OnRemoveButton()
+    public void HandleLeftClick()
     {
-        PlayerManager.playerInventory.RemoveAt(index, 1);
+        OnSlotLeftCLickCallback.Invoke(index);
+    }
 
-        UpdateText();
+    public void HandleRightClick()
+    {
+        OnSlotRightCLickCallback.Invoke(index);
     }
 
     public void UseItem()
     {
-        if (item != null)
+        if (_item != null)
         {
-            item.Use();
+            _item.Use();
         }
 
         UpdateText();
     }
-
 }

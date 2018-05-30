@@ -17,9 +17,13 @@ public class InventoryUI : MonoBehaviour {
 	void Start () {
         inventory = PlayerManager.playerInventory;
         inventoryGrid = inventoryUI.GetComponentInChildren<GridLayoutGroup>().gameObject;
-        inventory.onItemChangedCallback += UpdateUI;
+        slots = inventoryGrid.GetComponentsInChildren<InventorySlot>();
 
-        InitializeGUI();
+        inventory.onItemChangedCallback += UpdateUI;
+        inventory.onSizeChangedCallback += RefreshGUI;
+
+        RefreshGUI();
+        inventoryUI.SetActive(false);
     }
 	
 	// Update is called once per frame
@@ -31,6 +35,13 @@ public class InventoryUI : MonoBehaviour {
         }
 	}
 
+    void RefreshGUI()
+    {
+        ClearSlots();
+        InitializeGUI();
+        UpdateUI();
+    }
+
     void InitializeGUI()
     {
         slots = new InventorySlot[inventory.maxSize];
@@ -38,8 +49,20 @@ public class InventoryUI : MonoBehaviour {
         {
             InventorySlot slot = Instantiate(inventorySlotPrefab) as InventorySlot;
             slot.index = i;
+            slot.OnSlotLeftCLickCallback += HandleLeftClick;
+            slot.OnSlotRightCLickCallback += HandleRightClick;
             slot.transform.SetParent(inventoryGrid.transform);
             slots[i] = slot;
+        }
+    }
+
+    void ClearSlots()
+    {
+        for(int i=0; i<slots.Length; i++)
+        {
+            GameObject go = slots[i].gameObject;
+            slots[i] = null;
+            Destroy(go);
         }
     }
 
@@ -53,6 +76,40 @@ public class InventoryUI : MonoBehaviour {
             } else
             {
                 slots[i].ClearSlot();
+            }
+        }
+    }
+
+    void HandleLeftClick(int index)
+    {
+        PlayerInventoryManager inventoryManager = PlayerManager.inventoryManager;
+        InventoryEntry slotItem = inventory.items[index];
+        if (inventoryManager.heldItem != null && slotItem != null && inventoryManager.heldItem.equals(slotItem))
+        {
+            inventory.MergeStack(index, inventoryManager.heldItem);
+            inventoryManager.ReleaseHeldItem();
+        } else
+        {
+            InventoryEntry oldPlayerEntry = inventoryManager.SetHeldItem(inventory.items[index]);
+            inventory.SetItem(index, oldPlayerEntry);
+        }
+    }
+
+    void HandleRightClick(int index)
+    {
+        PlayerInventoryManager inventoryManager = PlayerManager.inventoryManager;
+        InventoryEntry slotItem = inventory.items[index];
+        if(inventoryManager.heldItem == null && slotItem != null)
+        {
+            inventoryManager.SetHeldItem(inventory.SplitStack(index));
+        } else if(inventoryManager.heldItem != null)
+        {
+            if(slotItem == null)
+            {
+                inventory.SetItem(index, inventoryManager.heldItem.PopItem());
+            } else if (slotItem.equals(inventoryManager.heldItem))
+            {
+                inventory.MergeStack(index, inventoryManager.heldItem.PopItem());
             }
         }
     }

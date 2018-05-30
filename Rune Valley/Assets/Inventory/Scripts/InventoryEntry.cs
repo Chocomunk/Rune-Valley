@@ -31,15 +31,17 @@ public class InventoryEntry
     {
         if (!this.IsEmpty())
         {
-            int otherItemCount = _itemCount / 2;
-            _itemCount = _itemCount - otherItemCount;
+            // Ensure other item has larger quantity in case of odd count
+            int newItemCount = _itemCount / 2;
+            int otherItemCount = _itemCount - newItemCount;
+            _itemCount = newItemCount;
             return new InventoryEntry(this._entryItem, otherItemCount);
         }
         Debug.LogError("No items left to split! This entry should have been deleted");
         return null;
     }
 
-    public bool MergeInventory(InventoryEntry other)
+    public bool MergeEntry(InventoryEntry other)
     {
         if(this.equals(other))
         {
@@ -82,12 +84,12 @@ public class InventoryEntry
 
     public void Use()
     {
-        this._itemCount -= 1;
+        //this._itemCount -= 1;
         this.entryItem.Use();
     }
 
     public bool equals(InventoryEntry other)
     {
-        return this._entryItem == other.entryItem;
+        return other != null && this._entryItem == other.entryItem;
     }
 }
