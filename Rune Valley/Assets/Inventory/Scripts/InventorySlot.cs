@@ -4,22 +4,29 @@ using UnityEngine.Events;
 
 public class InventorySlot : MonoBehaviour {
 
-    public delegate void OnSlotLeftClick(int slotIndex);
-    public delegate void OnSlotRightClick(int slotIndex);
-    public OnSlotLeftClick OnSlotLeftCLickCallback;
-    public OnSlotRightClick OnSlotRightCLickCallback;
-
     public Image icon;
     public Text itemCountText;
 
     public int index = 0;
+
+    private Inventory inventory;
 
     private InventoryEntry _item;
     public InventoryEntry item {
         get { return _item; }
     }
 
-    void UpdateText()
+    public void UseItem()
+    {
+        if (_item != null)
+        {
+            _item.Use();
+        }
+
+        UpdateText();
+    }
+
+    public void UpdateText()
     {
         if(_item != null && _item.itemCount > 0)
         {
@@ -50,23 +57,54 @@ public class InventorySlot : MonoBehaviour {
         UpdateText();
     }
 
+    public void AssignInventoryInstance(Inventory newInstance)
+    {
+        if (newInstance != null)
+        {
+            inventory = newInstance;
+        } else
+        {
+            Debug.LogError("Trying to assign a null invenotry instance!");
+        }
+    }
+
     public void HandleLeftClick()
     {
-        OnSlotLeftCLickCallback.Invoke(index);
+        if(inventory != null)
+        {
+            PlayerInventoryManager inventoryManager = PlayerManager.inventoryManager;
+            InventoryEntry slotItem = inventory.items[index];
+            if (inventoryManager.heldItem != null && slotItem != null && inventoryManager.heldItem.equals(slotItem))
+            {
+                inventory.MergeStack(index, inventoryManager.heldItem);
+                inventoryManager.ReleaseHeldItem();
+            } else
+            {
+                InventoryEntry oldPlayerEntry = inventoryManager.SetHeldItem(inventory.items[index]);
+                inventory.SetItem(index, oldPlayerEntry);
+            }
+        }
     }
 
     public void HandleRightClick()
     {
-        OnSlotRightCLickCallback.Invoke(index);
-    }
-
-    public void UseItem()
-    {
-        if (_item != null)
+        if(inventory != null)
         {
-            _item.Use();
+            PlayerInventoryManager inventoryManager = PlayerManager.inventoryManager;
+            InventoryEntry slotItem = inventory.items[index];
+            if(inventoryManager.heldItem == null && slotItem != null)
+            {
+                inventoryManager.SetHeldItem(inventory.SplitStack(index));
+            } else if(inventoryManager.heldItem != null)
+            {
+                if(slotItem == null)
+                {
+                    inventory.SetItem(index, inventoryManager.PopHeldItem());
+                } else if (slotItem.equals(inventoryManager.heldItem))
+                {
+                    inventory.MergeStack(index, inventoryManager.PopHeldItem());
+                }
+            }
         }
-
-        UpdateText();
     }
 }

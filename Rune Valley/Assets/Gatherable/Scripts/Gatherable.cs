@@ -32,7 +32,7 @@ public class Gatherable : MonoBehaviour {
 
     void Die()
     {
-        Debug.Log(this.gameObject.name + " destroyed");
+        //Debug.Log(this.gameObject.name + " destroyed");
         Drop();
         Destroy(this.gameObject);
     }

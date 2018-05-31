@@ -16,7 +16,7 @@ public class InventorySlotUI : Selectable, IPointerClickHandler, IPointerDownHan
 
     public void OnPointerClick(PointerEventData eventData)
     {
-
+        
     }
 
     public override void OnPointerDown(PointerEventData eventData)

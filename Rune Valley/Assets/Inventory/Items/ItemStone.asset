@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Name: ItemStone
   m_EditorClassIdentifier: 
   name: Stone
+  resourcePrefab: {fileID: 114222721597249256, guid: 75b4e865c9a031c40be38875725f6df0,
+    type: 2}
   icon: {fileID: 21300000, guid: eb5f6e2757c821940b69cf1456f7865a, type: 3}
   isDefaultItem: 0
+  defaultCount: 1

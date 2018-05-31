@@ -35,15 +35,26 @@ public class PlayerInventoryManager : MonoBehaviour {
         }
     }
 
-    void InstantiateHeldItem()
+    public void DropHeldItem()
+    {
+        InstantiateItem(_heldItem);
+        ReleaseHeldItem();
+    }
+
+    public void DropPoppedHeldItem()
+    {
+        InstantiateItem(this.PopHeldItem());
+    }
+
+    void InstantiateItem(InventoryEntry item)
     {
         if(_heldItem != null)
         {
-            ItemPickup newInstance = Instantiate(_heldItem.entryItem.resourcePrefab, 
+            ItemPickup newInstance = Instantiate(item.entryItem.resourcePrefab, 
                 PlayerManager.playerInstance.transform.position + PlayerManager.playerCameraInstance.transform.forward * heldItemDropDistance, 
                 PlayerManager.playerInstance.transform.rotation) as ItemPickup;
             newInstance.GetComponent<Rigidbody>().velocity = PlayerManager.playerCameraInstance.transform.forward * heldItemDropSpeed;
-            newInstance.SetInventoryEntry(_heldItem);
+            newInstance.SetInventoryEntry(item);
         }
     }
 
@@ -53,9 +64,19 @@ public class PlayerInventoryManager : MonoBehaviour {
         this.heldItemSlot.gameObject.SetActive(shouldShow);
         if (!shouldShow && _heldItem != null)
         {
-            InstantiateHeldItem();
-            ReleaseHeldItem();
+            DropHeldItem();
         }
+    }
+
+    public InventoryEntry PopHeldItem()
+    {
+        if(_heldItem != null)
+        {
+            InventoryEntry poppedEntry = _heldItem.PopItem();
+            heldItemSlot.UpdateText();
+            return poppedEntry;
+        }
+        return null;
     }
 
     public InventoryEntry SetHeldItem(InventoryEntry itemEntry)

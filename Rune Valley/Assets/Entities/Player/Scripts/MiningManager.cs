@@ -43,7 +43,7 @@ public class MiningManager : MonoBehaviour {
                 Debug.LogError("Tried mining object with no 'Gatherable' script");
             } else {
                 target.Damage(stats.miningDamage);
-                Debug.Log("Hit " + target.gameObject.name);
+                //Debug.Log("Hit " + target.gameObject.name);
             }
 
         }

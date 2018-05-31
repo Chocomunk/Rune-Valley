@@ -427,6 +427,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heldItemSlot: {fileID: 827779912}
+  heldItemDropDistance: 1.5
+  heldItemDropSpeed: 1.5
 --- !u!1 &342349091
 GameObject:
   m_ObjectHideFlags: 0

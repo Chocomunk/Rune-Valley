@@ -27,18 +27,7 @@ public class ItemPickup : MonoBehaviour {
         if(entry == null)
             entry = new InventoryEntry(item, item.defaultCount);
 	}
-
-    public bool SetInventoryEntry(InventoryEntry newEntry)
-    {
-        if (entry == null || entry.equals(newEntry))
-        {
-            this.entry = newEntry;
-            return true;
-        }
-        return false;
-    }
 	
-	// Update is called once per frame
 	void FixedUpdate () {
         if (PlayerManager.PlayerExists())
         {
@@ -85,6 +74,16 @@ public class ItemPickup : MonoBehaviour {
             Gizmos.color = Color.red;
         }
         Gizmos.DrawWireSphere(this.transform.position, pickupRange);
+    }
+
+    public bool SetInventoryEntry(InventoryEntry newEntry)
+    {
+        if (entry == null || entry.equals(newEntry))
+        {
+            this.entry = newEntry;
+            return true;
+        }
+        return false;
     }
 
     bool PlayerInRange(float range)

@@ -49,8 +49,7 @@ public class InventoryUI : MonoBehaviour {
         {
             InventorySlot slot = Instantiate(inventorySlotPrefab, inventoryGrid.transform) as InventorySlot;
             slot.index = i;
-            slot.OnSlotLeftCLickCallback += HandleLeftClick;
-            slot.OnSlotRightCLickCallback += HandleRightClick;
+            slot.AssignInventoryInstance(inventory);
             slots[i] = slot;
         }
     }
@@ -75,40 +74,6 @@ public class InventoryUI : MonoBehaviour {
             } else
             {
                 slots[i].ClearSlot();
-            }
-        }
-    }
-
-    void HandleLeftClick(int index)
-    {
-        PlayerInventoryManager inventoryManager = PlayerManager.inventoryManager;
-        InventoryEntry slotItem = inventory.items[index];
-        if (inventoryManager.heldItem != null && slotItem != null && inventoryManager.heldItem.equals(slotItem))
-        {
-            inventory.MergeStack(index, inventoryManager.heldItem);
-            inventoryManager.ReleaseHeldItem();
-        } else
-        {
-            InventoryEntry oldPlayerEntry = inventoryManager.SetHeldItem(inventory.items[index]);
-            inventory.SetItem(index, oldPlayerEntry);
-        }
-    }
-
-    void HandleRightClick(int index)
-    {
-        PlayerInventoryManager inventoryManager = PlayerManager.inventoryManager;
-        InventoryEntry slotItem = inventory.items[index];
-        if(inventoryManager.heldItem == null && slotItem != null)
-        {
-            inventoryManager.SetHeldItem(inventory.SplitStack(index));
-        } else if(inventoryManager.heldItem != null)
-        {
-            if(slotItem == null)
-            {
-                inventory.SetItem(index, inventoryManager.heldItem.PopItem());
-            } else if (slotItem.equals(inventoryManager.heldItem))
-            {
-                inventory.MergeStack(index, inventoryManager.heldItem.PopItem());
             }
         }
     }
