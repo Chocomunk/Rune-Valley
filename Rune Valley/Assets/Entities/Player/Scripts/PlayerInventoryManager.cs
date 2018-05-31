@@ -5,13 +5,17 @@ using UnityEngine;
 public class PlayerInventoryManager : MonoBehaviour {
 
     public InventorySlot heldItemSlot;
+    public InventoryUI playerInventoryUI;
 
     public float heldItemDropDistance = 1.5f;
     public float heldItemDropSpeed = 1.5f;
 
     private RectTransform heldItemRect;
 
-    private bool showHeldItem = false;
+    private bool _viewingInventory = false;
+    public bool viewingInventory {
+        get { return _viewingInventory; }
+    }
 
     private InventoryEntry _heldItem;
     public InventoryEntry heldItem {
@@ -25,11 +29,23 @@ public class PlayerInventoryManager : MonoBehaviour {
 
     public void Update()
     {
+        // Release held item if it is empty
         if(_heldItem != null && _heldItem.IsEmpty())
         {
             ReleaseHeldItem();
         }
-        if (showHeldItem)
+
+        // Toggle inventory view (GUI and UI consqeuences)
+		if(Input.GetButtonDown("Inventory"))
+        {
+            SetViewingInventory(!_viewingInventory);
+        }
+    }
+
+    public void LateUpdate()
+    {
+        // If viewing inventory, have the held item follow the cursor
+        if (_viewingInventory)
         {
             heldItemRect.anchoredPosition = Input.mousePosition;
         }
@@ -58,11 +74,12 @@ public class PlayerInventoryManager : MonoBehaviour {
         }
     }
 
-    public void SetShowHeldItem(bool shouldShow)
+    public void SetViewingInventory(bool viewing)
     {
-        this.showHeldItem = shouldShow;
-        this.heldItemSlot.gameObject.SetActive(shouldShow);
-        if (!shouldShow && _heldItem != null)
+        this._viewingInventory = viewing;
+        this.heldItemSlot.gameObject.SetActive(viewing);
+        playerInventoryUI.SetViewingInventory(viewing);
+        if (!viewing && _heldItem != null)
         {
             DropHeldItem();
         }

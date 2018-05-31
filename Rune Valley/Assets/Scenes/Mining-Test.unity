@@ -427,6 +427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heldItemSlot: {fileID: 827779912}
+  playerInventoryUI: {fileID: 1852174568}
   heldItemDropDistance: 1.5
   heldItemDropSpeed: 1.5
 --- !u!1 &342349091
@@ -438,6 +439,7 @@ GameObject:
   m_Component:
   - component: {fileID: 342349092}
   - component: {fileID: 342349093}
+  - component: {fileID: 342349094}
   m_Layer: 5
   m_Name: InventoryUI
   m_TagString: Untagged
@@ -471,6 +473,17 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 342349091}
+--- !u!114 &342349094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 342349091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdec172570ef76340bf3faddb589d8fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &406504939
 GameObject:
   m_ObjectHideFlags: 0
@@ -1656,7 +1669,7 @@ GameObject:
   - component: {fileID: 1852174567}
   - component: {fileID: 1852174568}
   m_Layer: 5
-  m_Name: Inventory
+  m_Name: PlayerInventory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1696,6 +1709,7 @@ MonoBehaviour:
   inventoryUI: {fileID: 342349091}
   inventorySlotPrefab: {fileID: 114968638683781898, guid: 6958781a041ef20438be3492fc28efd4,
     type: 2}
+  inventory: {fileID: 280330868}
 --- !u!1 &1929119598
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,14 +8,13 @@ public class InventoryUI : MonoBehaviour {
     public Transform itemsParent;
     public GameObject inventoryUI;
     public InventorySlot inventorySlotPrefab;
+    public Inventory inventory;
 
-    private Inventory inventory;
     private InventorySlot[] slots;
     private GameObject inventoryGrid;
 
 	// Use this for initialization
 	void Start () {
-        inventory = PlayerManager.playerInventory;
         inventoryGrid = inventoryUI.GetComponentInChildren<GridLayoutGroup>().gameObject;
         slots = inventoryGrid.GetComponentsInChildren<InventorySlot>();
 
@@ -28,12 +27,13 @@ public class InventoryUI : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetButtonDown("Inventory"))
-        {
-            PlayerManager.viewingInventory = !inventoryUI.activeSelf;
-            inventoryUI.SetActive(PlayerManager.viewingInventory);
-        }
+
 	}
+
+    public void SetViewingInventory(bool viewing)
+    {
+        inventoryUI.SetActive(viewing);
+    }
 
     void RefreshGUI()
     {

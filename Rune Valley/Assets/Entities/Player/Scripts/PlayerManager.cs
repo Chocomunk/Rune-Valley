@@ -11,14 +11,14 @@ public class PlayerManager : MonoBehaviour {
     public static Inventory playerInventory;
     public static PlayerInventoryManager inventoryManager;
 
-    public static bool _viewingInventory = false;
-    public static bool viewingInventory {
-        get { return _viewingInventory; }
-        set {
-            _viewingInventory = value;
-            inventoryManager.SetShowHeldItem(value);
-        }
-    }
+    //public static bool _viewingInventory = false;
+    //public static bool viewingInventory {
+    //    get { return _viewingInventory; }
+    //    set {
+    //        _viewingInventory = value;
+    //        inventoryManager.SetShowHeldItem(value);
+    //    }
+    //}
 
     public void Awake()
     {

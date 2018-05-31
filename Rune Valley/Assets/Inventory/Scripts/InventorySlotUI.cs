@@ -8,16 +8,11 @@ using UnityEngine.UI;
 [DisallowMultipleComponent]
 [ExecuteInEditMode]
 [SelectionBase]
-public class InventorySlotUI : Selectable, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler{
+public class InventorySlotUI : Selectable, IPointerDownHandler, IPointerUpHandler{
 
     public UnityEvent leftClick;
     public UnityEvent middleClick;
     public UnityEvent rightClick;
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        
-    }
 
     public override void OnPointerDown(PointerEventData eventData)
     {

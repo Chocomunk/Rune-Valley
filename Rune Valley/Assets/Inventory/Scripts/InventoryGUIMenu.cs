@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class InventoryGUIMenu : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler {
+public class InventoryGUIMenu : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler{
 
     private bool pointerInMenu = false;
 
@@ -27,11 +27,6 @@ public class InventoryGUIMenu : MonoBehaviour, IPointerEnterHandler, IPointerExi
             }
         }
 	}
-
-    public void OnPointerDown(PointerEventData eventData)
-    {
-
-    }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
