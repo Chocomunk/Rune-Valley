@@ -6,8 +6,10 @@ using UnityEngine;
 public class Item : ScriptableObject {
 
     new public string name = "New Item";
+    public ItemPickup resourcePrefab;
     public Sprite icon = null;
     public bool isDefaultItem = false;
+    public int defaultCount = 1;
 
     public virtual void Use()
     {

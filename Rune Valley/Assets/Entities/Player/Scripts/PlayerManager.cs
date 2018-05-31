@@ -7,6 +7,7 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour {
 
     public static Player playerInstance;
+    public static Camera playerCameraInstance;
     public static Inventory playerInventory;
     public static PlayerInventoryManager inventoryManager;
 
@@ -23,6 +24,12 @@ public class PlayerManager : MonoBehaviour {
     {
         playerInventory = this.GetComponent<Inventory>();
         inventoryManager = this.GetComponent<PlayerInventoryManager>();
+    }
+
+    public static void SetPlayer(Player player)
+    {
+        playerInstance = player;
+        playerCameraInstance = playerInstance.GetComponentInChildren<Camera>();
     }
 
     public static bool PlayerExists()

@@ -16,6 +16,11 @@ public class InventorySlotUI : Selectable, IPointerClickHandler, IPointerDownHan
 
     public void OnPointerClick(PointerEventData eventData)
     {
+
+    }
+
+    public override void OnPointerDown(PointerEventData eventData)
+    {
         if(eventData.button == PointerEventData.InputButton.Left)
         {
             leftClick.Invoke();
@@ -26,10 +31,7 @@ public class InventorySlotUI : Selectable, IPointerClickHandler, IPointerDownHan
         {
             rightClick.Invoke();
         }
-    }
 
-    public override void OnPointerDown(PointerEventData eventData)
-    {
         this.DoStateTransition(SelectionState.Pressed, true);
         base.OnPointerDown(eventData);
     }

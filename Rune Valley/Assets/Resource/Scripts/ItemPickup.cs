@@ -17,13 +17,26 @@ public class ItemPickup : MonoBehaviour {
     private float currLifetime = -1;
 
     private Rigidbody rigidBody;
+    private InventoryEntry entry;
 
 	// Use this for initialization
 	void Start () {
         rigidBody = this.gameObject.GetComponent<Rigidbody>();
         currCooldown = pickupCooldown;
         currLifetime = lifetime;
+        if(entry == null)
+            entry = new InventoryEntry(item, item.defaultCount);
 	}
+
+    public bool SetInventoryEntry(InventoryEntry newEntry)
+    {
+        if (entry == null || entry.equals(newEntry))
+        {
+            this.entry = newEntry;
+            return true;
+        }
+        return false;
+    }
 	
 	// Update is called once per frame
 	void FixedUpdate () {
@@ -35,7 +48,7 @@ public class ItemPickup : MonoBehaviour {
                 MoveToPlayer();
                 if (PlayerInRange(pickupRange))
                 {
-                    if (PlayerManager.playerInventory.Add(new InventoryEntry(item, 1)))
+                    if (PlayerManager.playerInventory.Add(entry))
                     {
                         Destroy(this.gameObject);
                     }

@@ -10,7 +10,7 @@ public class Player : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         stats = this.gameObject.GetComponent<PlayerStats>();
-        PlayerManager.playerInstance = this;
+        PlayerManager.SetPlayer(this);
 	}
 	
 	// Update is called once per frame

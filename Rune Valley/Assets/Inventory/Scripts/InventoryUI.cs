@@ -47,11 +47,10 @@ public class InventoryUI : MonoBehaviour {
         slots = new InventorySlot[inventory.maxSize];
         for(int i=0; i<inventory.maxSize; i++)
         {
-            InventorySlot slot = Instantiate(inventorySlotPrefab) as InventorySlot;
+            InventorySlot slot = Instantiate(inventorySlotPrefab, inventoryGrid.transform) as InventorySlot;
             slot.index = i;
             slot.OnSlotLeftCLickCallback += HandleLeftClick;
             slot.OnSlotRightCLickCallback += HandleRightClick;
-            slot.transform.SetParent(inventoryGrid.transform);
             slots[i] = slot;
         }
     }
