@@ -36,9 +36,25 @@ public class PlayerInventoryManager : MonoBehaviour {
         }
 
         // Toggle inventory view (GUI and UI consqeuences)
-		if(Input.GetButtonDown("Inventory"))
+		if(Input.GetButtonDown("Inventory") || (_viewingInventory && Input.GetKeyUp(KeyCode.Escape)))
         {
             SetViewingInventory(!_viewingInventory);
+            if (!_viewingInventory)
+            {
+                PlayerManager.viewingMenu = false;
+            }
+        }
+
+        // Check for clicks outside of inventory menus
+        if (!InventoryGUIMenu.PointerInAnyMenu())
+        {
+            if(Input.GetMouseButtonDown(0))
+            {
+                PlayerManager.inventoryManager.DropHeldItem();
+            } else if (Input.GetMouseButtonDown(1))
+            {
+                PlayerManager.inventoryManager.DropPoppedHeldItem();
+            }
         }
     }
 

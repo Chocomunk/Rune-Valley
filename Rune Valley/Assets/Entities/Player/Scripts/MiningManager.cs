@@ -6,9 +6,9 @@ using UnityEngine;
 public class MiningManager : MonoBehaviour {
 
     public LayerMask GatherableLayer;
+    public LayerMask InteractableLayer;
 
     private PlayerStats stats;
-    private Vector3 rs, re;
 
 	// Use this for initialization
 	void Start () {
@@ -21,15 +21,12 @@ public class MiningManager : MonoBehaviour {
         {
             Gather();
         }
-	}
 
-    void OnDrawGizmos()
-    {
-        if (stats != null)
+        if (Input.GetButtonDown("Fire2"))
         {
-            Debug.DrawLine(rs, rs + stats.miningDistance*re, new Color(255,0,0));
+            Interact();
         }
-    }
+	}
 
     void Gather()
     {
@@ -47,7 +44,23 @@ public class MiningManager : MonoBehaviour {
             }
 
         }
-        rs = shotRay.origin;
-        re = shotRay.direction;
+    }
+
+    void Interact()
+    {
+        RaycastHit hit;
+        Transform camT = stats.getCamera().transform;
+        Ray shotRay = new Ray(this.transform.position, this.transform.forward);
+        if(Physics.Raycast(shotRay, out hit, stats.miningDistance, InteractableLayer))
+        {
+            Interactable target = hit.collider.gameObject.GetComponent<Interactable>();
+            if (!target && hit.collider.gameObject!=null) {
+                Debug.LogError("Tried interacting with object with no 'Interactable' script");
+            } else {
+                target.Interact();
+                //Debug.Log("Hit " + target.gameObject.name);
+            }
+
+        }
     }
 }

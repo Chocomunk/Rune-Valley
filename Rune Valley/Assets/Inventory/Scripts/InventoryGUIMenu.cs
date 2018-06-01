@@ -7,26 +7,40 @@ using UnityEngine.UI;
 
 public class InventoryGUIMenu : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler{
 
+    private static List<InventoryGUIMenu> inventoryMenuList = new List<InventoryGUIMenu>();
+
     private bool pointerInMenu = false;
 
     // Use this for initialization
     void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        if (!pointerInMenu)
+        if (!inventoryMenuList.Contains(this))
         {
-            if(Input.GetMouseButtonDown(0))
-            {
-                PlayerManager.inventoryManager.DropHeldItem();
-            } else if (Input.GetMouseButtonDown(1))
-            {
-                PlayerManager.inventoryManager.DropPoppedHeldItem();
-            }
+            inventoryMenuList.Add(this);
+        } else
+        {
+            Debug.LogError("Inventory Menu already registered before game start!");
         }
 	}
+
+	// Update is called once per frame
+	void Update () {
+
+	}
+
+    public static bool PointerInAnyMenu()
+    {
+        foreach(InventoryGUIMenu menu in inventoryMenuList)
+        {
+            if (menu.pointerInMenu)
+                return true;
+        }
+        return false;
+    }
+
+    public bool PointerInMenu()
+    {
+        return pointerInMenu;
+    }
 
     public void OnPointerEnter(PointerEventData eventData)
     {

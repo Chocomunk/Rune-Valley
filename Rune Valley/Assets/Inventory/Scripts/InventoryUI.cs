@@ -33,6 +33,10 @@ public class InventoryUI : MonoBehaviour {
     public void SetViewingInventory(bool viewing)
     {
         inventoryUI.SetActive(viewing);
+        if (viewing)
+        {
+            PlayerManager.viewingMenu = true;
+        }
     }
 
     void RefreshGUI()
