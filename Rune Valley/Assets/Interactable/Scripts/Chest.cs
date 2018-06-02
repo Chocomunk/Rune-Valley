@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Chest : MonoBehaviour {
 
-    public InventoryUI inventoryUI;
+    public Inventory chestInventory;
 
     private bool _viewingInventory = false;
 
@@ -17,14 +17,9 @@ public class Chest : MonoBehaviour {
 	void Update () {
         if (_viewingInventory)
         {
-            if(Input.GetButton("Inventory"))
+            if(Input.GetButton("Inventory") || Input.GetKeyUp(KeyCode.Escape))
             {
                 Close();
-            } else if (Input.GetKeyUp(KeyCode.Escape))
-            {
-                Close();
-                PlayerManager.inventoryManager.SetViewingInventory(!PlayerManager.inventoryManager.viewingInventory);
-                PlayerManager.viewingMenu = false;
             }
         }
 	}
@@ -32,13 +27,13 @@ public class Chest : MonoBehaviour {
     public void Open()
     {
         _viewingInventory = true;
-        inventoryUI.SetViewingInventory(true);
+        PlayerManager.inventoryManager.SetExternalInventory(this.chestInventory, "Chest");
         PlayerManager.inventoryManager.SetViewingInventory(true);
+        PlayerManager.inventoryManager.SetViewingExternalInventory(true);
     }
 
     public void Close()
     {
         _viewingInventory = false;
-        inventoryUI.SetViewingInventory(false);
     }
 }

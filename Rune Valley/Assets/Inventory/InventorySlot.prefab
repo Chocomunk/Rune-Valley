@@ -56,6 +56,8 @@ GameObject:
   - component: {fileID: 222901097788844012}
   - component: {fileID: 114409250507483296}
   - component: {fileID: 114448664739534218}
+  - component: {fileID: 114253400622411630}
+  - component: {fileID: 114247888018794350}
   m_Layer: 5
   m_Name: ItemButton
   m_TagString: Untagged
@@ -73,12 +75,40 @@ GameObject:
   - component: {fileID: 224217413978387616}
   - component: {fileID: 114968638683781898}
   m_Layer: 5
-  m_Name: InventorySlot 1
+  m_Name: InventorySlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &114247888018794350
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1371360714354790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0.3584906, g: 0.16149415, b: 0.05242079, a: 0.16862746}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
+--- !u!114 &114253400622411630
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1371360714354790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0.5849056, g: 0.34472686, b: 0.124154516, a: 0.37254903}
+  m_EffectDistance: {x: -1, y: -1}
+  m_UseGraphicAlpha: 0
 --- !u!114 &114393340485526666
 MonoBehaviour:
   m_ObjectHideFlags: 1

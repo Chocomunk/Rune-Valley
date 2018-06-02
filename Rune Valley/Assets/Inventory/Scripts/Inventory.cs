@@ -11,20 +11,16 @@ public class Inventory : MonoBehaviour
     public OnItemChanged onItemChangedCallback;
     public OnSizeChanged onSizeChangedCallback;
 
+    public int maxSize = 20;
+
     private InventoryEntry[] _items;
     public InventoryEntry[] items {
         get { return _items; }
     }
 
-    private int _maxSize = 20;
-    public int maxSize {
-        get { return _maxSize; }
-        set { SetSize(value);  }
-    }
-
     public void Awake()
     {
-        _items = new InventoryEntry[_maxSize];
+        _items = new InventoryEntry[maxSize];
     }
 
     public void SetSize(int size)
@@ -35,24 +31,24 @@ public class Inventory : MonoBehaviour
             return;
         }
 
-        if (size < _maxSize)
+        if (size < maxSize)
         {
             Debug.LogWarning("Warning! Setting new inventory size to be smaller! Items may be lost");
         }
 
         if(items == null)
         {
-            _maxSize = size;
+            maxSize = size;
             return;
         }
 
         InventoryEntry[] newItems = new InventoryEntry[size];
-        for (int i = 0; i < (_maxSize < size ? _maxSize : size) ; i++)
+        for (int i = 0; i < (maxSize < size ? maxSize : size) ; i++)
         {
             newItems[i] = _items[i];
         }
         _items = newItems;
-        _maxSize = size;
+        maxSize = size;
         InvokeOnSizeChangedCallback();
     }
 
@@ -115,7 +111,7 @@ public class Inventory : MonoBehaviour
             /// Prioritize stacking into a matching item slot, then try to fill empty slots
             int nullIndex = -1;
             int existingIndex = -1;
-            for (int i = 0; i < _maxSize && nullIndex < 0 && existingIndex < 0; i++)
+            for (int i = 0; i < maxSize && nullIndex < 0 && existingIndex < 0; i++)
             {
                 if (nullIndex < 0 && _items[i] == null)
                 {
@@ -170,7 +166,7 @@ public class Inventory : MonoBehaviour
             return null;
         }
 
-        for (int i = 0; i < _maxSize; i++)
+        for (int i = 0; i < maxSize; i++)
         {
             if (_items[i] == item)
             {

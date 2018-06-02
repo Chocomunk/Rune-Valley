@@ -6,6 +6,7 @@ public class PlayerInventoryManager : MonoBehaviour {
 
     public InventorySlot heldItemSlot;
     public InventoryUI playerInventoryUI;
+    public InventoryUI externalInventoryUI;
 
     public float heldItemDropDistance = 1.5f;
     public float heldItemDropSpeed = 1.5f;
@@ -17,6 +18,11 @@ public class PlayerInventoryManager : MonoBehaviour {
         get { return _viewingInventory; }
     }
 
+    private bool _viewingExternalInventory = false;
+    public bool viewingExternalInventory {
+        get { return _viewingExternalInventory; }
+    }
+
     private InventoryEntry _heldItem;
     public InventoryEntry heldItem {
         get { return _heldItem; }
@@ -25,6 +31,7 @@ public class PlayerInventoryManager : MonoBehaviour {
     public void Start()
     {
         heldItemRect = heldItemSlot.GetComponent<RectTransform>();
+        playerInventoryUI.SetInventory(PlayerManager.playerInventory);
     }
 
     public void Update()
@@ -41,6 +48,7 @@ public class PlayerInventoryManager : MonoBehaviour {
             SetViewingInventory(!_viewingInventory);
             if (!_viewingInventory)
             {
+                SetViewingExternalInventory(false);
                 PlayerManager.viewingMenu = false;
             }
         }
@@ -67,6 +75,33 @@ public class PlayerInventoryManager : MonoBehaviour {
         }
     }
 
+    public void SetViewingInventory(bool viewing)
+    {
+        this._viewingInventory = viewing;
+        this.heldItemSlot.gameObject.SetActive(viewing);
+        playerInventoryUI.SetViewingInventory(viewing);
+        if (!viewing && _heldItem != null)
+        {
+            DropHeldItem();
+        }
+    }
+
+    public void SetExternalInventory(Inventory externalInventory, string title)
+    {
+        if(externalInventory == null)
+        {
+            Debug.LogError("Trying to assign a null external inventory");
+            return;
+        }
+        externalInventoryUI.SetInventory(externalInventory, title);
+    }
+
+    public void SetViewingExternalInventory(bool viewing)
+    {
+        this._viewingExternalInventory = viewing;
+        externalInventoryUI.SetViewingInventory(viewing);
+    }
+
     public void DropHeldItem()
     {
         InstantiateItem(_heldItem);
@@ -87,17 +122,6 @@ public class PlayerInventoryManager : MonoBehaviour {
                 PlayerManager.playerInstance.transform.rotation) as ItemPickup;
             newInstance.GetComponent<Rigidbody>().velocity = PlayerManager.playerCameraInstance.transform.forward * heldItemDropSpeed;
             newInstance.SetInventoryEntry(item);
-        }
-    }
-
-    public void SetViewingInventory(bool viewing)
-    {
-        this._viewingInventory = viewing;
-        this.heldItemSlot.gameObject.SetActive(viewing);
-        playerInventoryUI.SetViewingInventory(viewing);
-        if (!viewing && _heldItem != null)
-        {
-            DropHeldItem();
         }
     }
 

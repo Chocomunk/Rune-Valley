@@ -22,14 +22,12 @@ public class NewBehaviourScript : Editor {
 
     public override void OnInspectorGUI()
     {
-        int newSize = EditorGUILayout.IntField("Inventory Size", _inventorySize);
-        if (_inventorySize != newSize)
-        {
-            _inventorySize = newSize;
-            inventory.SetSize(_inventorySize);
-        }
+        base.OnInspectorGUI();
 
-        DrawInventoryList();
+        if(GUILayout.Button("Initialize Inventory"))
+        {
+            inventory.onSizeChangedCallback.Invoke();
+        }
     }
 
     void DrawInventoryList()
