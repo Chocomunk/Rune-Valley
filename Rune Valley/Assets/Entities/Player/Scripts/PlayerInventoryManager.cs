@@ -5,8 +5,13 @@ using UnityEngine;
 public class PlayerInventoryManager : MonoBehaviour {
 
     public InventorySlot heldItemSlot;
-    public InventoryUI playerInventoryUI;
+
+    public InventoryUI packInventoryUI;
+    public InventoryUI hotbarInventoryUI;
     public InventoryUI externalInventoryUI;
+
+    public Inventory packInventory;
+    public Inventory hotbarInventory;
 
     public float heldItemDropDistance = 1.5f;
     public float heldItemDropSpeed = 1.5f;
@@ -31,7 +36,8 @@ public class PlayerInventoryManager : MonoBehaviour {
     public void Start()
     {
         heldItemRect = heldItemSlot.GetComponent<RectTransform>();
-        playerInventoryUI.SetInventory(PlayerManager.playerInventory);
+        packInventoryUI.SetInventory(packInventory);
+        hotbarInventoryUI.SetInventory(hotbarInventory);
     }
 
     public void Update()
@@ -79,7 +85,8 @@ public class PlayerInventoryManager : MonoBehaviour {
     {
         this._viewingInventory = viewing;
         this.heldItemSlot.gameObject.SetActive(viewing);
-        playerInventoryUI.SetViewingInventory(viewing);
+        packInventoryUI.SetViewingInventory(viewing);
+        hotbarInventoryUI.SetViewingInventory(viewing);
         if (!viewing && _heldItem != null)
         {
             DropHeldItem();
@@ -122,6 +129,81 @@ public class PlayerInventoryManager : MonoBehaviour {
                 PlayerManager.playerInstance.transform.rotation) as ItemPickup;
             newInstance.GetComponent<Rigidbody>().velocity = PlayerManager.playerCameraInstance.transform.forward * heldItemDropSpeed;
             newInstance.SetInventoryEntry(item);
+        }
+    }
+
+    public bool AddToPlayerInventory(InventoryEntry newItem)
+    {
+        bool hotbarAttempt = hotbarInventory.Add(newItem);
+        bool packInventoryAttempt = hotbarAttempt ? true : packInventory.Add(newItem);
+        return packInventoryAttempt;
+        
+    }
+
+    public void StackItemInteract(Inventory sourceInventory, int index)
+    {
+        if(sourceInventory != null)
+        {
+            InventoryEntry slotItem = sourceInventory.items[index];
+            if (_heldItem != null && slotItem != null && _heldItem.equals(slotItem))
+            {
+                sourceInventory.MergeStack(index, _heldItem);
+                ReleaseHeldItem();
+            } else
+            {
+                if (Input.GetKey(KeyCode.LeftShift) && slotItem != null)
+                {
+                    if (_viewingExternalInventory)
+                    {
+                        if(sourceInventory == externalInventoryUI.inventory)
+                        {
+                            if (AddToPlayerInventory(slotItem))
+                                sourceInventory.RemoveAt(index);
+                        } else
+                        {
+                            if (externalInventoryUI.inventory.Add(slotItem))
+                                sourceInventory.RemoveAt(index);
+                        }
+                    } else
+                    {
+                        if(sourceInventory == hotbarInventory)
+                        {
+                            if (packInventory.Add(slotItem))
+                                hotbarInventory.RemoveAt(index);
+                        }
+                        if(sourceInventory == packInventory)
+                        {
+                            if (hotbarInventory.Add(slotItem))
+                                packInventory.RemoveAt(index);
+                        }
+                    }
+                } else
+                {
+                    InventoryEntry oldPlayerEntry = SetHeldItem(sourceInventory.items[index]);
+                    sourceInventory.SetItem(index, oldPlayerEntry);
+                }
+            }
+        }
+    }
+
+    public void SingleItemInteract(Inventory sourceInventory, int index)
+    {
+        if(sourceInventory != null)
+        {
+            InventoryEntry slotItem = sourceInventory.items[index];
+            if(_heldItem == null && slotItem != null)
+            {
+                SetHeldItem(sourceInventory.SplitStack(index));
+            } else if(_heldItem != null)
+            {
+                if(slotItem == null)
+                {
+                    sourceInventory.SetItem(index, PopHeldItem());
+                } else if (slotItem.equals(heldItem))
+                {
+                    sourceInventory.MergeStack(index, PopHeldItem());
+                }
+            }
         }
     }
 

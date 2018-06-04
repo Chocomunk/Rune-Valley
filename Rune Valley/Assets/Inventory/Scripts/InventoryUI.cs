@@ -21,6 +21,12 @@ public class InventoryUI : MonoBehaviour {
 	void Start () {
         slots = itemsParent.GetComponentsInChildren<InventorySlot>();
 
+        if(_inventory != null)
+        {
+            _inventory.onItemChangedCallback += UpdateUI;
+            _inventory.onSizeChangedCallback += RefreshGUI;
+        }
+
         RefreshGUI();
         inventoryUI.SetActive(false);
     }
@@ -87,9 +93,12 @@ public class InventoryUI : MonoBehaviour {
         {
             for(int i=0; i<slots.Length; i++)
             {
-                GameObject go = slots[i].gameObject;
-                slots[i] = null;
-                Destroy(go);
+                if(slots[i] != null)
+                {
+                    GameObject go = slots[i].gameObject;
+                    slots[i] = null;
+                    Destroy(go);
+                }
             }
         }
     }

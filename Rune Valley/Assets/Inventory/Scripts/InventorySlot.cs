@@ -70,41 +70,11 @@ public class InventorySlot : MonoBehaviour {
 
     public void HandleLeftClick()
     {
-        if(inventory != null)
-        {
-            PlayerInventoryManager inventoryManager = PlayerManager.inventoryManager;
-            InventoryEntry slotItem = inventory.items[index];
-            if (inventoryManager.heldItem != null && slotItem != null && inventoryManager.heldItem.equals(slotItem))
-            {
-                inventory.MergeStack(index, inventoryManager.heldItem);
-                inventoryManager.ReleaseHeldItem();
-            } else
-            {
-                InventoryEntry oldPlayerEntry = inventoryManager.SetHeldItem(inventory.items[index]);
-                inventory.SetItem(index, oldPlayerEntry);
-            }
-        }
+        PlayerManager.inventoryManager.StackItemInteract(inventory, index);
     }
 
     public void HandleRightClick()
     {
-        if(inventory != null)
-        {
-            PlayerInventoryManager inventoryManager = PlayerManager.inventoryManager;
-            InventoryEntry slotItem = inventory.items[index];
-            if(inventoryManager.heldItem == null && slotItem != null)
-            {
-                inventoryManager.SetHeldItem(inventory.SplitStack(index));
-            } else if(inventoryManager.heldItem != null)
-            {
-                if(slotItem == null)
-                {
-                    inventory.SetItem(index, inventoryManager.PopHeldItem());
-                } else if (slotItem.equals(inventoryManager.heldItem))
-                {
-                    inventory.MergeStack(index, inventoryManager.PopHeldItem());
-                }
-            }
-        }
+        PlayerManager.inventoryManager.SingleItemInteract(inventory, index);
     }
 }

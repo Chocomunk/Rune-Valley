@@ -37,7 +37,7 @@ public class ItemPickup : MonoBehaviour {
                 MoveToPlayer();
                 if (PlayerInRange(pickupRange))
                 {
-                    if (PlayerManager.playerInventory.Add(entry))
+                    if (PlayerManager.inventoryManager.AddToPlayerInventory(entry))
                     {
                         Destroy(this.gameObject);
                     }

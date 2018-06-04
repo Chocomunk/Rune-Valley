@@ -13,6 +13,8 @@ public class Inventory : MonoBehaviour
 
     public int maxSize = 20;
 
+    private bool filled = false;
+
     private InventoryEntry[] _items;
     public InventoryEntry[] items {
         get { return _items; }
@@ -21,6 +23,14 @@ public class Inventory : MonoBehaviour
     public void Awake()
     {
         _items = new InventoryEntry[maxSize];
+        onItemChangedCallback += checkFull;
+        onSizeChangedCallback += checkFull;
+        checkFull();
+    }
+
+    public bool isFull()
+    {
+        return filled;
     }
 
     public void SetSize(int size)
@@ -180,31 +190,27 @@ public class Inventory : MonoBehaviour
         return null;
     }
 
-    public InventoryEntry RemoveAt(int index, int count)
+    public InventoryEntry RemoveAt(int index)
     {
         if (index >= maxSize || index < 0)
         {
             throw new IndexOutOfRangeException("Inventory index out of bounds");
         }
 
-        if (count == 0)
-        {
-            Debug.LogWarning("Remove count is 0, not removing any items!");
-            return null;
-        }
+        InventoryEntry oldItem = _items[index];
+        _items[index] = null;
+        InvokeOnItemChangedCallback();
+        return oldItem;
+    }
 
-        if (_items[index] != null)
+    private void checkFull()
+    {
+        bool foundEmpty = false;
+        for(int i=0; i<maxSize && !foundEmpty; i++)
         {
-            InventoryEntry oldItem = _items[index];
-            int newCount = count < 0 || count > oldItem.itemCount? oldItem.itemCount : count;
-            InventoryEntry newItem = oldItem.PopItem(newCount);
-            if (oldItem.IsEmpty())
-                _items[index] = null;
-
-            InvokeOnItemChangedCallback();
-            return newItem;
+            foundEmpty = foundEmpty || _items[i] == null;
         }
-        return null;
+        filled = !foundEmpty;
     }
 
     void InvokeOnItemChangedCallback()
