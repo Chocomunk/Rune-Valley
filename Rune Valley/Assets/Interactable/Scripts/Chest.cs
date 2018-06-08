@@ -27,9 +27,9 @@ public class Chest : MonoBehaviour {
     public void Open()
     {
         _viewingInventory = true;
-        PlayerManager.inventoryManager.SetExternalInventory(this.chestInventory, "Chest");
-        PlayerManager.inventoryManager.SetViewingInventory(true);
-        PlayerManager.inventoryManager.SetViewingExternalInventory(true);
+        PlayerManager.instance.inventoryManager.SetExternalInventory(this.chestInventory, "Chest");
+        PlayerManager.instance.inventoryManager.SetViewingInventory(true);
+        PlayerManager.instance.inventoryManager.SetViewingExternalInventory(true);
     }
 
     public void Close()

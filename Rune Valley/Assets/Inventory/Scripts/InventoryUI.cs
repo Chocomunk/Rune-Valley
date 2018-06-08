@@ -61,7 +61,7 @@ public class InventoryUI : MonoBehaviour {
         inventoryUI.SetActive(viewing);
         if (viewing)
         {
-            PlayerManager.viewingMenu = true;
+            PlayerManager.instance.viewingMenu = true;
         }
     }
 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerStats))]
 public class MiningManager : MonoBehaviour {
 
     public LayerMask GatherableLayer;
@@ -12,7 +11,7 @@ public class MiningManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        stats = this.gameObject.GetComponentInParent<PlayerStats>();
+        stats = PlayerManager.instance.playerStats;
 	}
 	
 	// Update is called once per frame
@@ -31,8 +30,8 @@ public class MiningManager : MonoBehaviour {
     void Gather()
     {
         RaycastHit hit;
-        Transform camT = stats.getCamera().transform;
-        Ray shotRay = new Ray(this.transform.position, this.transform.forward);
+        Transform camT = PlayerManager.instance.playerCamera.transform;
+        Ray shotRay = new Ray(camT.position, camT.forward);
         if(Physics.Raycast(shotRay, out hit, stats.miningDistance, GatherableLayer))
         {
             Gatherable target = hit.collider.gameObject.GetComponent<Gatherable>();
@@ -49,8 +48,8 @@ public class MiningManager : MonoBehaviour {
     void Interact()
     {
         RaycastHit hit;
-        Transform camT = stats.getCamera().transform;
-        Ray shotRay = new Ray(this.transform.position, this.transform.forward);
+        Transform camT = PlayerManager.instance.playerCamera.transform;
+        Ray shotRay = new Ray(camT.position, camT.forward);
         if(Physics.Raycast(shotRay, out hit, stats.miningDistance, InteractableLayer))
         {
             Interactable target = hit.collider.gameObject.GetComponent<Interactable>();

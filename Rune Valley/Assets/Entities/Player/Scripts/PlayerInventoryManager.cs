@@ -55,7 +55,7 @@ public class PlayerInventoryManager : MonoBehaviour {
             if (!_viewingInventory)
             {
                 SetViewingExternalInventory(false);
-                PlayerManager.viewingMenu = false;
+                PlayerManager.instance.viewingMenu = false;
             }
         }
 
@@ -64,10 +64,10 @@ public class PlayerInventoryManager : MonoBehaviour {
         {
             if(Input.GetMouseButtonDown(0))
             {
-                PlayerManager.inventoryManager.DropHeldItem();
+                PlayerManager.instance.inventoryManager.DropHeldItem();
             } else if (Input.GetMouseButtonDown(1))
             {
-                PlayerManager.inventoryManager.DropPoppedHeldItem();
+                PlayerManager.instance.inventoryManager.DropPoppedHeldItem();
             }
         }
     }
@@ -124,10 +124,13 @@ public class PlayerInventoryManager : MonoBehaviour {
     {
         if(_heldItem != null)
         {
+            Transform playerTransform = PlayerManager.instance.playerInstance.transform;
+            Transform cameraTransform = PlayerManager.instance.playerCamera.transform;
+
             ItemPickup newInstance = Instantiate(item.entryItem.resourcePrefab, 
-                PlayerManager.playerInstance.transform.position + PlayerManager.playerCameraInstance.transform.forward * heldItemDropDistance, 
-                PlayerManager.playerInstance.transform.rotation) as ItemPickup;
-            newInstance.GetComponent<Rigidbody>().velocity = PlayerManager.playerCameraInstance.transform.forward * heldItemDropSpeed;
+                playerTransform.position + cameraTransform.forward * heldItemDropDistance, 
+                playerTransform.rotation) as ItemPickup;
+            newInstance.GetComponent<Rigidbody>().velocity = cameraTransform.forward * heldItemDropSpeed;
             newInstance.SetInventoryEntry(item);
         }
     }

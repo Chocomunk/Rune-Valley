@@ -61,8 +61,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Update is called once per frame
         private void Update()
         {
-            m_MouseLook.SetCursorLock(!PlayerManager.viewingMenu);
-            if (PlayerManager.viewingMenu)
+            m_MouseLook.SetCursorLock(!PlayerManager.instance.viewingMenu);
+            if (PlayerManager.instance.viewingMenu)
             {
                 return;
             }

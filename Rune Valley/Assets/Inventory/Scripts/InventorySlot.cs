@@ -70,11 +70,11 @@ public class InventorySlot : MonoBehaviour {
 
     public void HandleLeftClick()
     {
-        PlayerManager.inventoryManager.StackItemInteract(inventory, index);
+        PlayerManager.instance.inventoryManager.StackItemInteract(inventory, index);
     }
 
     public void HandleRightClick()
     {
-        PlayerManager.inventoryManager.SingleItemInteract(inventory, index);
+        PlayerManager.instance.inventoryManager.SingleItemInteract(inventory, index);
     }
 }

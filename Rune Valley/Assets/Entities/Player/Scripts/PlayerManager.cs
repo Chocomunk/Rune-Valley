@@ -5,24 +5,29 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerInventoryManager))]
 public class PlayerManager : MonoBehaviour {
 
-    public static Player playerInstance;
-    public static Camera playerCameraInstance;
-    public static PlayerInventoryManager inventoryManager;
+    private static PlayerManager _instance = null;
+    public static PlayerManager instance {
+        get { return _instance; }
+    }
 
-    public static bool viewingMenu;
+    public Player playerInstance;
+    public PlayerStats playerStats;
+    public Camera playerCamera;
+    [HideInInspector] public PlayerInventoryManager inventoryManager;
+
+    [HideInInspector] public bool viewingMenu;
 
     public void Awake()
     {
         inventoryManager = this.GetComponent<PlayerInventoryManager>();
+        if(_instance != null)
+        {
+            Debug.LogError("Multiple PlayerManager instances found! Overriding existing instance.");
+        }
+        _instance = this;
     }
 
-    public static void SetPlayer(Player player)
-    {
-        playerInstance = player;
-        playerCameraInstance = playerInstance.GetComponentInChildren<Camera>();
-    }
-
-    public static bool PlayerExists()
+    public bool PlayerExists()
     {
         return playerInstance != null;
     }

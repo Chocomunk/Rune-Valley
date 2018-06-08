@@ -29,7 +29,7 @@ public class ItemPickup : MonoBehaviour {
 	}
 	
 	void FixedUpdate () {
-        if (PlayerManager.PlayerExists())
+        if (PlayerManager.instance.PlayerExists())
         {
             // Cooldown condition always true in "no cooldown" case (cooldown = -1)
             if (currCooldown <= 0 && PlayerInRange(attractRange)) 
@@ -37,7 +37,7 @@ public class ItemPickup : MonoBehaviour {
                 MoveToPlayer();
                 if (PlayerInRange(pickupRange))
                 {
-                    if (PlayerManager.inventoryManager.AddToPlayerInventory(entry))
+                    if (PlayerManager.instance.inventoryManager.AddToPlayerInventory(entry))
                     {
                         Destroy(this.gameObject);
                     }
@@ -88,9 +88,9 @@ public class ItemPickup : MonoBehaviour {
 
     bool PlayerInRange(float range)
     {
-        if (PlayerManager.PlayerExists())
+        if (PlayerManager.instance.PlayerExists())
         {
-            float distance = Vector3.Distance(PlayerManager.playerInstance.transform.position, this.transform.position);
+            float distance = Vector3.Distance(PlayerManager.instance.playerInstance.transform.position, this.transform.position);
             return distance < range;
         }
         return false;
@@ -98,7 +98,7 @@ public class ItemPickup : MonoBehaviour {
 
     void MoveToPlayer()
     {
-        Vector3 dir = PlayerManager.playerInstance.transform.position + new Vector3(0,1,0) - this.transform.position;
+        Vector3 dir = PlayerManager.instance.playerInstance.transform.position + new Vector3(0,1,0) - this.transform.position;
         rigidBody.MovePosition(this.transform.position + dir * Time.deltaTime * flightSpeed);
     }
 

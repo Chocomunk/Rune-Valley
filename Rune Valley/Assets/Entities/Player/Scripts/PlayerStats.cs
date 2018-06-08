@@ -15,16 +15,8 @@ public class PlayerStats : MonoBehaviour {
     public float miningDistance = 10;
     public float miningDamage = 25;
 
-    private Camera FirstPersonCamera;
-
     public void Start()
     {
-        FirstPersonCamera = this.gameObject.GetComponentInChildren<Camera>();
-    }
-
-    public Camera getCamera()
-    {
-        return this.FirstPersonCamera;
     }
 
 }

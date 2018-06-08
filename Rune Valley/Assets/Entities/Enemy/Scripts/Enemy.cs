@@ -45,9 +45,9 @@ public class Enemy : MonoBehaviour {
 
     bool inAttackRange()
     {
-        if (PlayerManager.PlayerExists())
+        if (PlayerManager.instance.PlayerExists())
         {
-            float distance = Vector3.Distance(PlayerManager.playerInstance.transform.position, this.transform.position);
+            float distance = Vector3.Distance(PlayerManager.instance.playerInstance.transform.position, this.transform.position);
             return distance < stats.attackRange;
         }
         return false;
@@ -61,7 +61,7 @@ public class Enemy : MonoBehaviour {
     void Attack()
     {
         attackCooldown = 1 / stats.attackSpeed;
-        PlayerManager.playerInstance.Damage(stats.damage);
+        PlayerManager.instance.playerInstance.Damage(stats.damage);
         Debug.Log(this.gameObject.name +" is attacking the player for "+stats.damage+" damage");
     }
 }
