@@ -33,7 +33,7 @@ public class InventorySlotUI : Selectable, IPointerDownHandler, IPointerUpHandle
 
     public override void OnPointerUp(PointerEventData eventData)
     {
-        this.DoStateTransition(SelectionState.Highlighted, false);
+        this.DoStateTransition(SelectionState.Highlighted, true);
         base.OnPointerUp(eventData);
     }
 }

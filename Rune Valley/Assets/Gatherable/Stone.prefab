@@ -111,6 +111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   health: 100
+  gatherableType: 1
 --- !u!114 &114667598864133704
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -123,5 +124,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drop: {fileID: 1390046779913610, guid: 75b4e865c9a031c40be38875725f6df0, type: 2}
-  dropCount: 4
+  dropCount: 10
   dropSpread: 0.5

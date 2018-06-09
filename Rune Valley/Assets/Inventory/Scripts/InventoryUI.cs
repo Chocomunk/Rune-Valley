@@ -10,7 +10,10 @@ public class InventoryUI : MonoBehaviour {
     public Text inventoryTitle;
     public InventorySlot inventorySlotPrefab;
 
-    private InventorySlot[] slots;
+    private InventorySlot[] _slots;
+    public InventorySlot[] slots {
+        get { return _slots; }
+    }
     private Inventory _inventory;
     public Inventory inventory {
         get { return _inventory; }
@@ -19,7 +22,7 @@ public class InventoryUI : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        slots = itemsParent.GetComponentsInChildren<InventorySlot>();
+        _slots = itemsParent.GetComponentsInChildren<InventorySlot>();
 
         if(_inventory != null)
         {
@@ -28,7 +31,6 @@ public class InventoryUI : MonoBehaviour {
         }
 
         RefreshGUI();
-        inventoryUI.SetActive(false);
     }
 	
 	// Update is called once per frame
@@ -59,10 +61,6 @@ public class InventoryUI : MonoBehaviour {
     public void SetViewingInventory(bool viewing)
     {
         inventoryUI.SetActive(viewing);
-        if (viewing)
-        {
-            PlayerManager.instance.viewingMenu = true;
-        }
     }
 
     void RefreshGUI()
@@ -76,27 +74,27 @@ public class InventoryUI : MonoBehaviour {
     {
         if(_inventory != null)
         {
-            slots = new InventorySlot[_inventory.maxSize];
+            _slots = new InventorySlot[_inventory.maxSize];
             for(int i=0; i<_inventory.maxSize; i++)
             {
                 InventorySlot slot = Instantiate(inventorySlotPrefab, itemsParent) as InventorySlot;
                 slot.index = i;
                 slot.AssignInventoryInstance(_inventory);
-                slots[i] = slot;
+                _slots[i] = slot;
             }
         }
     }
 
     void ClearSlots()
     {
-        if(slots != null)
+        if(_slots != null)
         {
-            for(int i=0; i<slots.Length; i++)
+            for(int i=0; i<_slots.Length; i++)
             {
-                if(slots[i] != null)
+                if(_slots[i] != null)
                 {
-                    GameObject go = slots[i].gameObject;
-                    slots[i] = null;
+                    GameObject go = _slots[i].gameObject;
+                    _slots[i] = null;
                     Destroy(go);
                 }
             }
@@ -107,14 +105,14 @@ public class InventoryUI : MonoBehaviour {
     {
         if(_inventory != null)
         {
-            for (int i=0; i<slots.Length; i++)
+            for (int i=0; i<_slots.Length; i++)
             {
                 if (_inventory.items[i] != null)
                 {
-                    slots[i].AddItem(_inventory.items[i]);
+                    _slots[i].AddItem(_inventory.items[i]);
                 } else
                 {
-                    slots[i].ClearSlot();
+                    _slots[i].ClearSlot();
                 }
             }
         }

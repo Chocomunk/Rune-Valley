@@ -5,9 +5,12 @@ using UnityEngine.Events;
 public class InventorySlot : MonoBehaviour {
 
     public Image icon;
+    public Image BG;
     public Text itemCountText;
+    public Sprite defaultBG;
+    public Sprite selectedBG;
 
-    public int index = 0;
+    [HideInInspector] public int index = 0;
 
     private Inventory inventory;
 
@@ -55,6 +58,17 @@ public class InventorySlot : MonoBehaviour {
         icon.enabled = false;
 
         UpdateText();
+    }
+
+    public void SetSelected(bool isSelected)
+    {
+        if (isSelected)
+        {
+            BG.sprite = selectedBG;
+        } else
+        {
+            BG.sprite = defaultBG;
+        }
     }
 
     public void AssignInventoryInstance(Inventory newInstance)

@@ -4,19 +4,21 @@ using UnityEngine;
 
 public class PlayerInventoryManager : MonoBehaviour {
 
-    public InventorySlot heldItemSlot;
+    public InventorySlot grabbedItemSlot;
 
     public InventoryUI packInventoryUI;
     public InventoryUI hotbarInventoryUI;
+    public InventoryUI hotbarViewingInventoryUI;
     public InventoryUI externalInventoryUI;
 
     public Inventory packInventory;
     public Inventory hotbarInventory;
 
-    public float heldItemDropDistance = 1.5f;
-    public float heldItemDropSpeed = 1.5f;
+    public float itemDropDistance = 1.5f;
+    public float itemDropSpeed = 1.5f;
 
-    private RectTransform heldItemRect;
+    private RectTransform grabbedItemRect;
+    private int selectedItemIndex = -1;
 
     private bool _viewingInventory = false;
     public bool viewingInventory {
@@ -35,9 +37,14 @@ public class PlayerInventoryManager : MonoBehaviour {
 
     public void Start()
     {
-        heldItemRect = heldItemSlot.GetComponent<RectTransform>();
+        grabbedItemRect = grabbedItemSlot.GetComponent<RectTransform>();
+
         packInventoryUI.SetInventory(packInventory);
         hotbarInventoryUI.SetInventory(hotbarInventory);
+        hotbarViewingInventoryUI.SetInventory(hotbarInventory);
+
+        SetSelectedItem(0);
+        SetViewingInventory(false);
     }
 
     public void Update()
@@ -70,6 +77,16 @@ public class PlayerInventoryManager : MonoBehaviour {
                 PlayerManager.instance.inventoryManager.DropPoppedHeldItem();
             }
         }
+
+        // Manage selected item cycling
+        float scrollWheel = Input.GetAxis("Mouse ScrollWheel");
+        if(scrollWheel > 0)         // Scroll up
+        {
+            SetSelectedItem((selectedItemIndex - 1 + hotbarInventory.maxSize) % hotbarInventory.maxSize);
+        } else if (scrollWheel < 0) // Scroll down
+        {
+            SetSelectedItem((selectedItemIndex + 1) % hotbarInventory.maxSize);
+        }
     }
 
     public void LateUpdate()
@@ -77,20 +94,26 @@ public class PlayerInventoryManager : MonoBehaviour {
         // If viewing inventory, have the held item follow the cursor
         if (_viewingInventory)
         {
-            heldItemRect.anchoredPosition = Input.mousePosition;
+            grabbedItemRect.anchoredPosition = Input.mousePosition;
         }
     }
 
     public void SetViewingInventory(bool viewing)
     {
         this._viewingInventory = viewing;
-        this.heldItemSlot.gameObject.SetActive(viewing);
+        this.grabbedItemSlot.gameObject.SetActive(viewing);
+
         packInventoryUI.SetViewingInventory(viewing);
         hotbarInventoryUI.SetViewingInventory(viewing);
+        hotbarViewingInventoryUI.SetViewingInventory(!viewing);
+
         if (!viewing && _heldItem != null)
         {
             DropHeldItem();
         }
+
+        if (viewing)
+            PlayerManager.instance.viewingMenu = true;
     }
 
     public void SetExternalInventory(Inventory externalInventory, string title)
@@ -107,6 +130,9 @@ public class PlayerInventoryManager : MonoBehaviour {
     {
         this._viewingExternalInventory = viewing;
         externalInventoryUI.SetViewingInventory(viewing);
+
+        if (viewing)
+            PlayerManager.instance.viewingMenu = true;
     }
 
     public void DropHeldItem()
@@ -128,9 +154,9 @@ public class PlayerInventoryManager : MonoBehaviour {
             Transform cameraTransform = PlayerManager.instance.playerCamera.transform;
 
             ItemPickup newInstance = Instantiate(item.entryItem.resourcePrefab, 
-                playerTransform.position + cameraTransform.forward * heldItemDropDistance, 
+                playerTransform.position + cameraTransform.forward * itemDropDistance, 
                 playerTransform.rotation) as ItemPickup;
-            newInstance.GetComponent<Rigidbody>().velocity = cameraTransform.forward * heldItemDropSpeed;
+            newInstance.GetComponent<Rigidbody>().velocity = cameraTransform.forward * itemDropSpeed;
             newInstance.SetInventoryEntry(item);
         }
     }
@@ -215,7 +241,7 @@ public class PlayerInventoryManager : MonoBehaviour {
         if(_heldItem != null)
         {
             InventoryEntry poppedEntry = _heldItem.PopItem();
-            heldItemSlot.UpdateText();
+            grabbedItemSlot.UpdateText();
             return poppedEntry;
         }
         return null;
@@ -233,10 +259,10 @@ public class PlayerInventoryManager : MonoBehaviour {
         _heldItem = itemEntry;
         if(_heldItem == null)
         {
-            heldItemSlot.ClearSlot();
+            grabbedItemSlot.ClearSlot();
         } else
         {
-            heldItemSlot.AddItem(_heldItem);
+            grabbedItemSlot.AddItem(_heldItem);
         }
         return oldEntry;
     }
@@ -244,5 +270,21 @@ public class PlayerInventoryManager : MonoBehaviour {
     public InventoryEntry ReleaseHeldItem()
     {
         return SetHeldItem(null);
+    }
+
+    void SetSelectedItem(int newIndex)
+    {
+        if(newIndex > hotbarInventory.maxSize - 1 || newIndex < 0)
+        {
+            Debug.LogError("Trying to set selected item to an invalid index! newIndex="+newIndex);
+            return;
+        }
+
+        if(selectedItemIndex >= 0)
+        {
+            hotbarViewingInventoryUI.slots[selectedItemIndex].SetSelected(false);
+        }
+        hotbarViewingInventoryUI.slots[newIndex].SetSelected(true);
+        selectedItemIndex = newIndex;
     }
 }

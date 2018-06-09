@@ -125,7 +125,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   health: 100
-  type: -1
+  gatherableType: -1
   damage: 10
   attackSpeed: 2
   attackRange: 1.5
