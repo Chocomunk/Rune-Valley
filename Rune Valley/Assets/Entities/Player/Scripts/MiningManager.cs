@@ -16,36 +16,39 @@ public class MiningManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetButtonDown("Fire1"))
-        {
-            Gather();
-        }
+        //if (Input.GetButtonDown("Fire1"))
+        //{
+        //    Gather();
+        //}
 
-        if (Input.GetButtonDown("Fire2"))
-        {
-            Interact();
-        }
+        //if (Input.GetButtonDown("Fire2"))
+        //{
+        //    Interact();
+        //}
 	}
 
-    void Gather()
+    public void Gather(ToolItem tool)
     {
         RaycastHit hit;
         Transform camT = PlayerManager.instance.playerCamera.transform;
         Ray shotRay = new Ray(camT.position, camT.forward);
-        if(Physics.Raycast(shotRay, out hit, stats.miningDistance, GatherableLayer))
+        if (Physics.Raycast(shotRay, out hit, stats.miningDistance, GatherableLayer))
         {
             Gatherable target = hit.collider.gameObject.GetComponent<Gatherable>();
-            if (!target && hit.collider.gameObject!=null) {
+            if (!target && hit.collider.gameObject != null) {
                 Debug.LogError("Tried mining object with no 'Gatherable' script");
             } else {
-                target.Damage(stats.miningDamage);
-                //Debug.Log("Hit " + target.gameObject.name);
+                if (target.gatherableStats.gatherableType == tool.toolType || target.gatherableStats.gatherableType < 0)
+                {
+                    target.Damage(stats.miningDamage);
+                    //Debug.Log("Hit " + target.gameObject.name);
+                }
             }
 
         }
     }
 
-    void Interact()
+    public void Interact()
     {
         RaycastHit hit;
         Transform camT = PlayerManager.instance.playerCamera.transform;

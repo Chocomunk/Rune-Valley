@@ -87,6 +87,22 @@ public class PlayerInventoryManager : MonoBehaviour {
         {
             SetSelectedItem((selectedItemIndex + 1) % hotbarInventory.maxSize);
         }
+
+        InventoryEntry selectedItem = hotbarInventory.items[selectedItemIndex];
+
+        // Mining or interaction
+        if (Input.GetButtonDown("Fire1"))
+        {
+            if (selectedItem != null && selectedItem.entryItem is ToolItem)
+            {
+                PlayerManager.instance.miningManager.Gather(selectedItem.entryItem as ToolItem);
+            }
+        }
+
+        if (Input.GetButtonDown("Fire2"))
+        {
+            PlayerManager.instance.miningManager.Interact();
+        }
     }
 
     public void LateUpdate()

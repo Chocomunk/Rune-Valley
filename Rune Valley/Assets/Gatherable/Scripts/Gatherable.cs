@@ -5,21 +5,24 @@ using UnityEngine;
 [RequireComponent(typeof(GatherableStats))]
 public class Gatherable : MonoBehaviour {
 
-    private GatherableStats stats;
-
     public GameObject drop;
 
     public int dropCount = 3;
     public float dropSpread = 0.5f;
 
+    private GatherableStats _stats;
+    public GatherableStats gatherableStats {
+        get { return _stats; }
+    }
+
 	// Use this for initialization
 	void Start () {
-        stats = this.gameObject.GetComponent<GatherableStats>();
+        _stats = this.gameObject.GetComponent<GatherableStats>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(stats.health <= 0)
+		if(_stats.health <= 0)
         {
             Die();
         }
@@ -27,7 +30,7 @@ public class Gatherable : MonoBehaviour {
 
     public void Damage(float damage)
     {
-        stats.health -= (int)(damage + Random.Range(0,1));
+        _stats.health -= (int)(damage + Random.Range(0,1));
     }
 
     void Die()
