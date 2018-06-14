@@ -8,12 +8,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e46fc350d74092488926d4e46f5940f, type: 3}
-  m_Name: ItemStone
+  m_Script: {fileID: 11500000, guid: aa73ffccd1859cc45985bdff779655c8, type: 3}
+  m_Name: Pickaxe
   m_EditorClassIdentifier: 
-  name: Stone
-  resourcePrefab: {fileID: 114222721597249256, guid: 75b4e865c9a031c40be38875725f6df0,
+  name: Pickaxe
+  resourcePrefab: {fileID: 114355859877667296, guid: d85176403f8cf004fb75a9603bbfb984,
     type: 2}
-  icon: {fileID: 21300000, guid: b79bf734044c09742804235ef920fc9b, type: 3}
+  icon: {fileID: 21300000, guid: eb5f6e2757c821940b69cf1456f7865a, type: 3}
   isDefaultItem: 0
   defaultCount: 1
+  toolType: 1

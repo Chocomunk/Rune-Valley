@@ -20,6 +20,21 @@ public class Inventory : MonoBehaviour
         get { return _items; }
     }
 
+    public void Update()
+    {
+        bool clearedEmptyEntries = false;
+        for(int i=0; i< maxSize; i++)
+        {
+            if(_items[i] != null && _items[i].IsEmpty())
+            {
+                _items[i] = null;
+                clearedEmptyEntries = true;
+            }
+        }
+        if (clearedEmptyEntries)
+            onItemChangedCallback.Invoke();
+    }
+
     public void Awake()
     {
         _items = new InventoryEntry[maxSize];

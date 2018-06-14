@@ -8,13 +8,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d76f51437a6ba084e863ad6b3907a658, type: 3}
-  m_Name: Axe
+  m_Script: {fileID: 11500000, guid: dd400952774e7ff4d96d5fc7b0962445, type: 3}
+  m_Name: ItemStone
   m_EditorClassIdentifier: 
-  name: Axe
-  resourcePrefab: {fileID: 114296828945523878, guid: a23a9b302148e7642ae333d0ebe7f3e3,
+  name: Stone
+  resourcePrefab: {fileID: 114222721597249256, guid: 75b4e865c9a031c40be38875725f6df0,
     type: 2}
-  icon: {fileID: 21300000, guid: 49b611e658efbf443b686a4036f74fe3, type: 3}
+  icon: {fileID: 21300000, guid: b79bf734044c09742804235ef920fc9b, type: 3}
   isDefaultItem: 0
   defaultCount: 1
-  toolType: 0

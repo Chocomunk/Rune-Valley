@@ -19,16 +19,6 @@ public class InventorySlot : MonoBehaviour {
         get { return _item; }
     }
 
-    public void UseItem()
-    {
-        if (_item != null)
-        {
-            _item.Use();
-        }
-
-        UpdateText();
-    }
-
     public void UpdateText()
     {
         if(_item != null && _item.itemCount > 0)
@@ -43,6 +33,7 @@ public class InventorySlot : MonoBehaviour {
     public void AddItem (InventoryEntry newItem)
     {
         _item = newItem;
+        _item.OnCountChangedCallback += UpdateText;
 
         icon.sprite = _item.entryItem.icon;
         icon.enabled = true;
@@ -52,6 +43,8 @@ public class InventorySlot : MonoBehaviour {
 
     public void ClearSlot()
     {
+        if (_item != null)
+            _item.OnCountChangedCallback -= UpdateText;
         _item = null;
 
         icon.sprite = null;

@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class InventoryEntry
 {
+    public delegate void OnCountChanged();
+    public OnCountChanged OnCountChangedCallback;
+
     private Item _entryItem;
     public Item entryItem {
         get { return _entryItem;  }
@@ -35,6 +38,7 @@ public class InventoryEntry
             int newItemCount = _itemCount / 2;
             int otherItemCount = _itemCount - newItemCount;
             _itemCount = newItemCount;
+            OnCountChangedCallback.Invoke();
             return new InventoryEntry(this._entryItem, otherItemCount);
         }
         Debug.LogError("No items left to split! This entry should have been deleted");
@@ -46,6 +50,7 @@ public class InventoryEntry
         if(this.equals(other))
         {
             this._itemCount += other.itemCount;
+            OnCountChangedCallback.Invoke();
             return true;
         }
         Debug.LogError("Error Merging ivnentory entries: Mismatched Item types!");
@@ -79,13 +84,8 @@ public class InventoryEntry
         int popCount = count > this._itemCount || count == -1 ? this._itemCount : count;
 
         this._itemCount -= popCount;
+        OnCountChangedCallback.Invoke();
         return new InventoryEntry(this._entryItem, popCount);
-    }
-
-    public void Use()
-    {
-        //this._itemCount -= 1;
-        this.entryItem.Use();
     }
 
     public bool equals(InventoryEntry other)

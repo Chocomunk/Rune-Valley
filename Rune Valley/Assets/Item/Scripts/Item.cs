@@ -11,11 +11,4 @@ public class Item : ScriptableObject {
     public bool isDefaultItem = false;
     public int defaultCount = 1;
 
-    public virtual void Use()
-    {
-        // Implement
-
-        Debug.Log("Using " + name);
-    }
-
 }

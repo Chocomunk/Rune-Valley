@@ -8,13 +8,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d76f51437a6ba084e863ad6b3907a658, type: 3}
-  m_Name: Pickaxe
+  m_Script: {fileID: 11500000, guid: aa73ffccd1859cc45985bdff779655c8, type: 3}
+  m_Name: Axe
   m_EditorClassIdentifier: 
-  name: Pickaxe
-  resourcePrefab: {fileID: 114355859877667296, guid: d85176403f8cf004fb75a9603bbfb984,
+  name: Axe
+  resourcePrefab: {fileID: 114296828945523878, guid: a23a9b302148e7642ae333d0ebe7f3e3,
     type: 2}
   icon: {fileID: 21300000, guid: 5b1a64ea234fb2343b8d0686c51280de, type: 3}
   isDefaultItem: 0
   defaultCount: 1
-  toolType: 1
+  toolType: 0

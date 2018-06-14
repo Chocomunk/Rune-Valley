@@ -62,6 +62,6 @@ public class Enemy : MonoBehaviour {
     {
         attackCooldown = 1 / stats.attackSpeed;
         PlayerManager.instance.playerInstance.Damage(stats.damage);
-        Debug.Log(this.gameObject.name +" is attacking the player for "+stats.damage+" damage");
+        Debug.Log(this.gameObject.name +" is attacking the player for "+stats.damage+" damage. Player Health: "+PlayerManager.instance.playerStats.health);
     }
 }

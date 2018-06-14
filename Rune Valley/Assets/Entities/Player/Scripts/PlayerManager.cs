@@ -31,6 +31,31 @@ public class PlayerManager : MonoBehaviour {
         _instance = this;
     }
 
+    public void Update()
+    {
+        // Mining or interaction
+        if (Input.GetButtonDown("Fire1"))
+        {
+            InventoryEntry selectedItem = inventoryManager.getSelectedItem();
+            if(selectedItem != null)
+            {
+                if(selectedItem.entryItem is ToolItem)
+                {
+                    PlayerManager.instance.miningManager.Gather(selectedItem.entryItem as ToolItem);
+                } else if(selectedItem.entryItem is UsableItem)
+                {
+                    (selectedItem.entryItem as UsableItem).Use();
+                    selectedItem.PopItem();
+                }
+            }
+        }
+
+        if (Input.GetButtonDown("Fire2"))
+        {
+            PlayerManager.instance.miningManager.Interact();
+        }
+    }
+
     public bool PlayerExists()
     {
         return playerInstance != null;
