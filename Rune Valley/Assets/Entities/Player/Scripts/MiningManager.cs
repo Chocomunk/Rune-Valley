@@ -8,13 +8,48 @@ public class MiningManager : MonoBehaviour {
     public LayerMask InteractableLayer;
 
     private PlayerStats stats;
+    private ToolItem selectedTool = null;
 
 	// Use this for initialization
 	void Start () {
         stats = PlayerManager.instance.playerStats;
 	}
 
-    public void Gather(ToolItem tool)
+    void Update()
+    {
+        // Mining or interaction
+        if (Input.GetButtonDown("Fire1"))
+        {
+            InventoryEntry selectedItem = PlayerManager.instance.inventoryManager.getSelectedItem();
+            if(selectedItem != null)
+            {
+                if(selectedItem.entryItem is ToolItem)
+                {
+                    //PlayerManager.instance.miningManager.Gather(selectedItem.entryItem as ToolItem);
+                    selectedTool = selectedItem.entryItem as ToolItem;
+                    PlayerManager.instance.playerAnimator.SetBool("SwingTool", true);
+                } else
+                {
+                    PlayerManager.instance.playerAnimator.SetBool("SwingTool", false);
+                    if(selectedItem.entryItem is UsableItem)
+                    {
+                        (selectedItem.entryItem as UsableItem).Use();
+                        selectedItem.PopItem();
+                    }
+                }
+            }
+        } else if (Input.GetButtonUp("Fire1"))
+        {
+            PlayerManager.instance.playerAnimator.SetBool("SwingTool", false);
+        }
+
+        if (Input.GetButtonDown("Fire2"))
+        {
+            PlayerManager.instance.miningManager.Interact();
+        }
+    }
+
+    public void Gather()
     {
         RaycastHit hit;
         Transform camT = PlayerManager.instance.playerCamera.transform;
@@ -25,7 +60,7 @@ public class MiningManager : MonoBehaviour {
             if (!target && hit.collider.gameObject != null) {
                 Debug.LogError("Tried mining object with no 'Gatherable' script");
             } else {
-                if (target.gatherableStats.gatherableType == tool.toolType || target.gatherableStats.gatherableType < 0)
+                if (target.gatherableStats.gatherableType == selectedTool.toolType || target.gatherableStats.gatherableType < 0)
                 {
                     target.Damage(stats.miningDamage);
                     //Debug.Log("Hit " + target.gameObject.name);

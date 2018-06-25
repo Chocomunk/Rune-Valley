@@ -12,8 +12,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
     {
         private enum MovementState { IDLE, WALKING, RUNNING}
 
-        [SerializeField] private Animator playerAnimator;
-
         [SerializeField] private bool m_IsWalking;
         [SerializeField] private float m_WalkSpeed;
         [SerializeField] private float m_RunSpeed;
@@ -73,9 +71,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 return;
             }
 
-            playerAnimator.SetBool("SwingTool", CrossPlatformInputManager.GetButton("Fire1"));
-
-            playerAnimator.SetInteger("movementState", (int)m_MovementState);
+            PlayerManager.instance.playerAnimator.SetInteger("movementState", (int)m_MovementState);
 
             RotateView();
             // the jump state needs to read here to make sure it is not missed
@@ -237,15 +233,15 @@ namespace UnityStandardAssets.Characters.FirstPerson
             if (m_Input.magnitude < Vector2.kEpsilon)
             {
                 m_MovementState = MovementState.IDLE;
-                playerAnimator.speed = 1;
+                PlayerManager.instance.playerAnimator.speed = 1;
             } else if (m_IsWalking)
             {
                 m_MovementState = MovementState.WALKING;
-                playerAnimator.speed = 1.5f;
+                PlayerManager.instance.playerAnimator.speed = 1.5f;
             } else
             {
                 m_MovementState = MovementState.RUNNING;
-                playerAnimator.speed = 2f;
+                PlayerManager.instance.playerAnimator.speed = 2f;
             }
 
             // normalize input if it exceeds 1 in combined length:
