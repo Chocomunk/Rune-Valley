@@ -14,6 +14,7 @@ public class PlayerManager : MonoBehaviour {
     public Player playerInstance;
     public PlayerStats playerStats;
     public Camera playerCamera;
+    public Animator playerAnimator;
 
     [HideInInspector] public PlayerInventoryManager inventoryManager;
     [HideInInspector] public MiningManager miningManager;

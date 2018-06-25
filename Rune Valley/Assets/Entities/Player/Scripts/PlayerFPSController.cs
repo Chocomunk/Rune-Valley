@@ -10,6 +10,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
     [RequireComponent(typeof(AudioSource))]
     public class PlayerFPSController : MonoBehaviour
     {
+        private enum MovementState { IDLE, WALKING, RUNNING}
+
+        [SerializeField] private Animator playerAnimator;
+
         [SerializeField] private bool m_IsWalking;
         [SerializeField] private float m_WalkSpeed;
         [SerializeField] private float m_RunSpeed;
@@ -42,6 +46,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
 
+        private MovementState m_MovementState = MovementState.IDLE;
+
         // Use this for initialization
         private void Start()
         {
@@ -66,6 +72,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
             {
                 return;
             }
+
+            playerAnimator.SetBool("SwingTool", CrossPlatformInputManager.GetButton("Fire1"));
+
+            playerAnimator.SetInteger("movementState", (int)m_MovementState);
 
             RotateView();
             // the jump state needs to read here to make sure it is not missed
@@ -223,6 +233,20 @@ namespace UnityStandardAssets.Characters.FirstPerson
             // set the desired speed to be walking or running
             speed = m_IsWalking ? m_WalkSpeed : m_RunSpeed;
             m_Input = new Vector2(horizontal, vertical);
+
+            if (m_Input.magnitude < Vector2.kEpsilon)
+            {
+                m_MovementState = MovementState.IDLE;
+                playerAnimator.speed = 1;
+            } else if (m_IsWalking)
+            {
+                m_MovementState = MovementState.WALKING;
+                playerAnimator.speed = 1.5f;
+            } else
+            {
+                m_MovementState = MovementState.RUNNING;
+                playerAnimator.speed = 2f;
+            }
 
             // normalize input if it exceeds 1 in combined length:
             if (m_Input.sqrMagnitude > 1)

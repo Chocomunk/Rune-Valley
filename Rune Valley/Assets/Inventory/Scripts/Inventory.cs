@@ -15,7 +15,7 @@ public class Inventory : MonoBehaviour
 
     private bool filled = false;
 
-    private InventoryEntry[] _items;
+    [UnityEngine.SerializeField] private InventoryEntry[] _items;
     public InventoryEntry[] items {
         get { return _items; }
     }

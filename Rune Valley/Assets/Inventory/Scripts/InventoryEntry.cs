@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 
+[System.Serializable]
 public class InventoryEntry
 {
     public delegate void OnCountChanged();
     public OnCountChanged OnCountChangedCallback;
 
-    private Item _entryItem;
+    [UnityEngine.SerializeField] private Item _entryItem;
     public Item entryItem {
         get { return _entryItem;  }
     }
 
-    private int _itemCount;
+    [UnityEngine.SerializeField] private int _itemCount;
     public int itemCount {
         get { return _itemCount; }
     }
