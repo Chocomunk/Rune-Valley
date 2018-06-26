@@ -17,6 +17,11 @@ public class MiningManager : MonoBehaviour {
 
     void Update()
     {
+        if (PlayerManager.instance.viewingMenu)
+        {
+            return;
+        }
+
         // Mining or interaction
         if (Input.GetButtonDown("Fire1"))
         {

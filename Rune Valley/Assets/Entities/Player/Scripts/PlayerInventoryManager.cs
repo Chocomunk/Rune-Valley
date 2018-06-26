@@ -43,8 +43,8 @@ public class PlayerInventoryManager : MonoBehaviour {
         hotbarInventoryUI.SetInventory(hotbarInventory);
         hotbarViewingInventoryUI.SetInventory(hotbarInventory);
 
-        SetSelectedItem(0);
         SetViewingInventory(false);
+        SetSelectedItem(0);
     }
 
     public void Update()
