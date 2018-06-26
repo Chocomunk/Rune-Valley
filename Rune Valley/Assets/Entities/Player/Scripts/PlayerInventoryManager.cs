@@ -5,20 +5,26 @@ using UnityEngine;
 public class PlayerInventoryManager : MonoBehaviour {
 
     public InventorySlot grabbedItemSlot;
+    public Transform handTransform;
 
+    [Header("Inventory UI's")]
     public InventoryUI packInventoryUI;
     public InventoryUI hotbarInventoryUI;
     public InventoryUI hotbarViewingInventoryUI;
     public InventoryUI externalInventoryUI;
 
+    [Header("Player Inventories")]
     public Inventory packInventory;
     public Inventory hotbarInventory;
 
+    [Header("Item Drop Properties")]
     public float itemDropDistance = 1.5f;
     public float itemDropSpeed = 1.5f;
 
     private RectTransform grabbedItemRect;
+    private GameObject heldTool;
     private int selectedItemIndex = -1;
+    private bool holdingTool = false;
 
     private bool _viewingInventory = false;
     public bool viewingInventory {
@@ -49,10 +55,24 @@ public class PlayerInventoryManager : MonoBehaviour {
 
     public void Update()
     {
+        InventoryEntry selecteditem = hotbarInventory.items[selectedItemIndex];
         // Release held item if it is empty
         if(_heldItem != null && _heldItem.IsEmpty())
         {
             ReleaseHeldItem();
+        }
+
+        if(!holdingTool && selecteditem != null && selecteditem.entryItem is ToolItem)
+        {
+            heldTool = Instantiate(selecteditem.entryItem.resourcePrefab, handTransform).gameObject;
+            heldTool.GetComponent<ItemPickup>().enabled = false;
+            heldTool.GetComponent<Collider>().enabled = false;
+            Vector3 sc = heldTool.transform.localScale;
+            heldTool.transform.localScale = new Vector3(sc.x * 34, sc.y * 34, sc.z * 34);
+            holdingTool = true;
+        } else if(holdingTool && (selecteditem == null || !(selecteditem.entryItem is ToolItem)))
+        {
+            ClearHeldTool();
         }
 
         // Toggle inventory view (GUI and UI consqeuences)
@@ -95,6 +115,14 @@ public class PlayerInventoryManager : MonoBehaviour {
         if (_viewingInventory)
         {
             grabbedItemRect.anchoredPosition = Input.mousePosition;
+        }
+    }
+
+    public void FixedUpdate()
+    {
+        if(holdingTool && heldTool != null)
+        {
+            heldTool.transform.localPosition = Vector3.zero;
         }
     }
 
@@ -277,6 +305,13 @@ public class PlayerInventoryManager : MonoBehaviour {
         return hotbarInventory.items[selectedItemIndex];
     }
 
+    void ClearHeldTool()
+    {
+        Destroy(this.heldTool);
+        this.heldTool = null;
+        holdingTool = false;
+    }
+
     void SetSelectedItem(int newIndex)
     {
         if(newIndex > hotbarInventory.maxSize - 1 || newIndex < 0)
@@ -291,5 +326,6 @@ public class PlayerInventoryManager : MonoBehaviour {
         }
         hotbarViewingInventoryUI.slots[newIndex].SetSelected(true);
         selectedItemIndex = newIndex;
+        ClearHeldTool();
     }
 }
