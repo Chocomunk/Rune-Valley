@@ -6,6 +6,7 @@ using UnityEngine;
 public class Gatherable : MonoBehaviour {
 
     public GameObject drop;
+    public AudioClip gatherSound;
 
     public int dropCount = 3;
     public float dropSpread = 0.5f;

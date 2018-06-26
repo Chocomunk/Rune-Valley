@@ -6,6 +6,7 @@ public class MiningManager : MonoBehaviour {
 
     public LayerMask GatherableLayer;
     public LayerMask InteractableLayer;
+    public AudioSource managerAudioSource;
 
     private PlayerStats stats;
     private ToolItem selectedTool = null;
@@ -65,6 +66,8 @@ public class MiningManager : MonoBehaviour {
             if (!target && hit.collider.gameObject != null) {
                 Debug.LogError("Tried mining object with no 'Gatherable' script");
             } else {
+                managerAudioSource.clip = target.gatherSound;
+                managerAudioSource.Play();
                 if (target.gatherableStats.gatherableType == selectedTool.toolType || target.gatherableStats.gatherableType < 0)
                 {
                     target.Damage(stats.miningDamage);

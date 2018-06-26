@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drop: {fileID: 1920131571331210, guid: 491b2d726842019418ad389626a3452f, type: 2}
+  gatherSound: {fileID: 8300000, guid: 5897aeed9b676024fbb8c694b421a861, type: 3}
   dropCount: 10
   dropSpread: 0.5
 --- !u!114 &114750660912246102
